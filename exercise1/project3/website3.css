@@ -1,0 +1,46 @@
+*{
+    padding:0;
+    margin:0;
+    border:2px solid #999;
+    }
+.wrapper{
+    display:-moz-box;
+    display:-webkit-box;/* 盒模型*/
+    margin:20px 20px 20px 20px;
+    background-color:#eee;
+    height:600px;
+}
+.right .left .middle  {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background-color:#fff;
+    }
+
+.right
+{
+    width: 120px;
+    padding: 20px;
+
+}
+.left{
+    width: 200px;
+    padding: 20px;
+
+}
+.left div{
+    background-color:#eee;
+    width:100%;
+}
+img{
+    width:80px;
+
+}
+.logo img{
+    margin-top:20px;
+}
+.middle{
+    width: 300px;
+    margin:0 20px;
+    -webkit-box-flex:1;
+    -moz-box-flex:1;
+}
