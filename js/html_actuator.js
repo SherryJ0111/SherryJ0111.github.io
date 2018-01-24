@@ -66,7 +66,7 @@ HTMLActuator.prototype.addTile = function (tile) {
 //Adaption Start
   if(window.my_list){
     inner.textContent = my_list[tile.value] || tile.value;
-	inner.style.fontSize = (1/inner.textContent.length *50)+ 'px';
+	inner.style.fontSize = (2)+ 'rem';
     inner.style.fontFamily = '黑体';
   }
 //Adaption Close
