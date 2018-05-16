@@ -9,13 +9,12 @@
     <meta name="author" content="">
 
     <title>NABP Database</title>
-
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="css/blog-post.css" rel="stylesheet">
-
+    <script src="js/highcharts.js"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
   </head>
 
   <body>
@@ -62,183 +61,898 @@
       </div>
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
+    <div class="container">          <!-- Title -->
+        <h1 class="mt-4">Statistics</h1>
+        <hr>
 
-      <div class="row">
+       <div id="type" ></div>
+        <script>
+            // 图表配置
+            var options = {
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: 'By Interaction Type'                 // 标题
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Interaction type share',
+                    data: [
+                        ['Protein-RNA interaction',   40],
+                        ['Protein-DNA interaction',   60]
+                    ]
+                }]
+            };
+            // 图表初始化函数
+            var chart = Highcharts.chart('type', options);
+        </script>
+        <div id="organism"></div>
+        <script>
+            // 图表配置
+            var options = {
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }//指定图表的类型，默认是折线图（line）
+                },
+                title: {
+                    text: 'By Organism'                 // 标题
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'organism share',
+                    data: [
+                            ['Homo sapiens',19.6406753304454],
+                            ["Escherichia coli",9.62456958791514],
+                            ["Thermus thermophilus",8.54715094968344],
+                            ["Saccharomyces cerevisiae",7.35588137287571],
+                            ["Haloarcula marismortui",6.18127290903032],
+                            ["Xenopus laevis",4.26802177052094],
+                            ["Mus musculus",2.75186049094746],
+                            ["Deinococcus radiodurans",2.34921692769077],
+                            ["Staphylococcus aureus",1.62723536598911],
+                            ["Geobacillus stearothermophilus",1.5383760968566],
+                            ["Sulfolobus solfataricus",1.53004554037543],
+                            ["Drosophila melanogaster",0.996889925580362],
+                            ["Mycobacterium tuberculosis",0.99133622125958],
+                            ["Oryctolagus cuniculus",0.977451960457625],
+                            ["Escherichia virus RB69",0.971898256136843],
+                            ["Bacillus subtilis",0.874708430523159],
+                            ["Human immunodeficiency virus 1",0.874708430523159],
+                            ["Haemophilus influenzae",0.699766744418527],
+                            ["Desulfurococcus mucosus",0.688659335776963],
+                            ["Thermus aquaticus",0.685882483616572],
+                            ["Streptococcus pneumoniae",0.577585249361324],
+                            ["Spinacia oleracea",0.574808397200933],
+                            ["Archaeoglobus fulgidus",0.572031545040542],
+                            ["Pseudomonas aeruginosa",0.541486171276241],
+                            ["Escherichia virus T4",0.527601910474286],
+                            ["Pyrococcus abyssi",0.502610241030768],
+                            ["Escherichia virus P1",0.466511162945685],
+                            ["Chlamydomonas reinhardtii",0.455403754304121],
+                            ["Kluyveromyces lactis",0.435965789181384],
+                            ["Mycobacterium smegmatis",0.430412084860602],
+                            ["Aquifex aeolicus",0.410974119737865],
+                            ["Rattus norvegicus",0.408197267577474],
+                            ["Schizosaccharomyces pombe",0.405420415417083],
+                            ["Arabidopsis thaliana",0.399866711096301],
+                            ["Escherichia virus Lambda",0.394313006775519],
+                            ["Pyrococcus furiosus",0.380428745973564],
+                            ["Xanthomonas campestris",0.327668554926136],
+                            ["Sulfolobus islandicus rod-shaped virus 2",0.322114850605354],
+                            ["Enterococcus faecalis",0.308230589803399],
+                            ["Watermelon mosaic virus",0.302676885482617],
+                            ["Enterobacter sp. RFL1396",0.294346329001444],
+                            ["Simian foamy virus",0.288792624680662],
+                            ["Lactococcus lactis",0.286015772520271],
+                            ["Enterovirus C",0.28323892035988],
+                            ["Sus scrofa",0.266577807397534],
+                            ["Escherichia virus T7",0.261024103076752],
+                            ["Geobacillus kaustophilus",0.258247250916361],
+                            ["Thermotoga maritima",0.252693546595579],
+                            ["Bacillus halodurans",0.249916694435188],
+                            ["Helicobacter pylori",0.241586137954015],
+                            ["Tobacco virtovirus 1",0.238809285793624],
+                            ["Methanocaldococcus jannaschii",0.236032433633233],
+                            ["Acidianus filamentous virus 1",0.233255581472842],
+                            ["Bos taurus",0.224925024991669],
+                            ["African swine fever virus",0.219371320670887],
+                            ["Escherichia virus MS2",0.219371320670887],
+                            ["Streptococcus pyogenes",0.216594468510496],
+                            ["Gallus gallus",0.211040764189715],
+                            ["Indiana vesiculovirus",0.208263912029324],
+                            ["Danio rerio",0.202710207708542],
+                            ["Human orthopneumovirus",0.202710207708542],
+                            ["Listeria monocytogenes",0.191602799066978],
+                            ["Trichomonas vaginalis",0.191602799066978],
+                            ["Streptomyces antibioticus",0.188825946906587],
+                            ["Methanothermobacter thermautotrophicus",0.183272242585805],
+                            ["synthetic construct",0.183272242585805],
+                            ["Sulfolobus sp. NOB8H2",0.172164833944241],
+                            ["Influenza A virus",0.163834277463068],
+                            ["Murine leukemia virus",0.163834277463068],
+                            ["Thermobifida fusca",0.161057425302677],
+                            ["Drosophila mauritiana",0.158280573142286],
+                            ["Sterkiella nova",0.158280573142286],
+                            ["Streptomyces griseus",0.158280573142286],
+                            ["Bacillus thuringiensis",0.149950016661113],
+                            ["Sulfolobus acidocaldarius",0.14161946017994],
+                            ["Leishmania donovani",0.138842608019549],
+                            ["Visna/maedi virus",0.138842608019549],
+                            ["Plasmodium falciparum",0.136065755859158],
+                            ["Neisseria gonorrhoeae",0.127735199377985],
+                            ["Klebsiella pneumoniae",0.124958347217594],
+                            ["Caenorhabditis elegans",0.122181495057203],
+                            ["Pseudomonas virus phi6",0.122181495057203],
+                            ["Pyrococcus horikoshii",0.122181495057203],
+                            ["Chaetomium thermophilum",0.119404642896812],
+                            ["Hepacivirus C",0.119404642896812],
+                            ["Streptococcus agalactiae",0.119404642896812],
+                            ["Bacillus virus phi29",0.11385093857603],
+                            ["Salmonella virus P22",0.11385093857603],
+                            ["Bacillus cereus",0.111074086415639],
+                            ["Physarum polycephalum",0.108297234255248],
+                            ["Foot-and-mouth disease virus",0.105520382094857],
+                            ["Haemophilus haemolyticus",0.105520382094857],
+                            ["Lachancea kluyveri",0.105520382094857],
+                            ["Caulobacter vibrioides",0.102743529934466],
+                            ["Escherichia virus N4",0.102743529934466],
+                            ["Staphylococcus epidermidis",0.102743529934466],
+                            ["Enterovirus B",0.0999666777740753],
+                            ["Sandfly fever Naples phlebovirus",0.0999666777740753],
+                            ["Vibrio cholerae",0.0999666777740753],
+                            ["Acinetobacter baumannii",0.0944129734532933],
+                            ["Aspergillus nidulans",0.0944129734532933],
+                            ["Macaca mulatta polyomavirus 1",0.0944129734532933],
+                            ["Trypanosoma cruzi",0.0944129734532933],
+                            ["Toxoplasma gondii",0.0916361212929024],
+                            ["Pseudomonas fluorescens",0.0888592691325114],
+                            ["Thermococcus kodakarensis",0.0888592691325114],
+                            ["unidentified",0.0888592691325114],
+                            ["Acinetobacter sp. ADP1",0.0833055648117294],
+                            ["Dengue virus",0.0833055648117294],
+                            ["Streptomyces coelicolor",0.0833055648117294],
+                            ["Neisseria meningitidis",0.0805287126513384],
+                            ["Xenopus tropicalis",0.0805287126513384],
+                            ["Bovine papillomavirus",0.0749750083305565],
+                            ["Brevibacillus centrosporus",0.0721981561701655],
+                            ["Dictyostelium discoideum",0.0721981561701655],
+                            ["Staphylococcus warneri",0.0721981561701655],
+                            ["Streptomyces venezuelae",0.0721981561701655],
+                            ["Vaccinia virus",0.0721981561701655],
+                            ["Bamboo mosaic virus",0.0694213040097745],
+                            ["Entamoeba histolytica",0.0694213040097745],
+                            ["Human gammaherpesvirus 8",0.0694213040097745],
+                            ["Influenza B virus",0.0694213040097745],
+                            ["Sordaria macrospora",0.0694213040097745],
+                            ["Acanthamoeba polyphaga mimivirus",0.0666444518493835],
+                            ["Candida albicans",0.0666444518493835],
+                            ["Chlorella vulgaris",0.0666444518493835],
+                            ["Corynebacterium diphtheriae",0.0666444518493835],
+                            ["Bacillus amyloliquefaciens",0.0638675996889926],
+                            ["Salmonella enterica",0.0638675996889926],
+                            ["Pectobacterium atrosepticum",0.0610907475286016],
+                            ["Rabies lyssavirus",0.0610907475286016],
+                            ["Aeropyrum pernix",0.0583138953682106],
+                            ["Agrobacterium tumefaciens",0.0583138953682106],
+                            ["Canis lupus",0.0583138953682106],
+                            ["Proteus vulgaris",0.0583138953682106],
+                            ["Rous sarcoma virus",0.0583138953682106],
+                            ["Tomato aspermy virus",0.0583138953682106],
+                            ["[Eubacterium] rectale",0.0555370432078196],
+                            ["Enterovirus A",0.0555370432078196],
+                            ["Flock House virus",0.0555370432078196],
+                            ["Francisella tularensis",0.0555370432078196],
+                            ["Human gammaherpesvirus 4",0.0555370432078196],
+                            ["Rotavirus A",0.0555370432078196],
+                            ["Shewanella oneidensis",0.0555370432078196],
+                            ["Citrobacter sp. RFL231",0.0527601910474286],
+                            ["Human alphaherpesvirus 1",0.0527601910474286],
+                            ["Komagataella phaffii",0.0527601910474286],
+                            ["Monomastix sp. OKE-1",0.0527601910474286],
+                            ["Streptomyces echinatus",0.0527601910474286],
+                            ["Vibrio vulnificus",0.0527601910474286],
+                            ["Anabaena sp.",0.0499833388870377],
+                            ["Corynebacterium glutamicum",0.0499833388870377],
+                            ["Mouse mammary tumor virus",0.0499833388870377],
+                            ["Sulfolobus acidocaldarius,Sulfolobus solfataricus",0.0499833388870377],
+                            ["Zygosaccharomyces rouxii",0.0499833388870377],
+                            ["Agrobacterium fabrum",0.0472064867266467],
+                            ["Haemophilus parahaemolyticus",0.0472064867266467],
+                            ["Lachnospiraceae bacterium ND2006",0.0472064867266467],
+                            ["Rift Valley fever phlebovirus",0.0472064867266467],
+                            ["Tomato bushy stunt virus",0.0472064867266467],
+                            ["Adeno-associated dependoparvovirus A",0.0444296345662557],
+                            ["Anas platyrhynchos",0.0444296345662557],
+                            ["Caldanaerobacter subterraneus",0.0444296345662557],
+                            ["Enterobacter cloacae",0.0444296345662557],
+                            ["Fischerella thermalis",0.0444296345662557],
+                            ["Geobacillus",0.0444296345662557],
+                            ["Moraxella sp.",0.0444296345662557],
+                            ["Musca domestica",0.0444296345662557],
+                            ["Shewanella putrefaciens",0.0444296345662557],
+                            ["Sinorhizobium fredii",0.0444296345662557],
+                            ["Synechococcus elongatus",0.0444296345662557],
+                            ["Macaca mulatta",0.0416527824058647],
+                            ["Magnaporthe oryzae",0.0416527824058647],
+                            ["Pseudomonas phage PP7",0.0416527824058647],
+                            ["Tetrahymena thermophila",0.0416527824058647],
+                            ["Reston ebolavirus",0.0388759302454737],
+                            ["Sulfolobus solfataricus,Human immunodeficiency virus 1",0.0388759302454737],
+                            ["Triticum aestivum",0.0388759302454737],
+                            ["Yersinia pestis",0.0388759302454737],
+                            ["Deltapapillomavirus 4",0.0360990780850828],
+                            ["Fusarium graminearum",0.0360990780850828],
+                            ["Mammalian rubulavirus 5",0.0360990780850828],
+                            ["Paramecium bursaria Chlorella virus 1",0.0360990780850828],
+                            ["Acidaminococcus sp. BV3L6",0.0333222259246918],
+                            ["Adeno-associated dependoparvovirus B",0.0333222259246918],
+                            ["Alicyclobacillus acidoterrestris",0.0333222259246918],
+                            ["Bunyamwera orthobunyavirus",0.0333222259246918],
+                            ["Haemophilus aegyptius",0.0333222259246918],
+                            ["Methanosarcina mazei",0.0333222259246918],
+                            ["Methanothermus fervidus",0.0333222259246918],
+                            ["Norwalk virus",0.0333222259246918],
+                            ["Pseudomonas protegens",0.0333222259246918],
+                            ["Pseudomonas putida",0.0333222259246918],
+                            ["synthetic construct,Aquifex aeolicus",0.0333222259246918],
+                            ["Bacillus pumilus",0.0305453737643008],
+                            ["Desulfurococcus mucosus,Chlamydomonas reinhardtii",0.0305453737643008],
+                            ["Human metapneumovirus",0.0305453737643008],
+                            ["Listeria innocua",0.0305453737643008],
+                            ["Moorella thermoacetica",0.0305453737643008],
+                            ["Tomato spotted wilt orthotospovirus",0.0305453737643008],
+                            ["Bacillus megaterium",0.0277685216039098],
+                            ["Beak and feather disease virus",0.0277685216039098],
+                            ["Lassa mammarenavirus",0.0277685216039098],
+                            ["Leanyer virus",0.0277685216039098],
+                            ["Macaca nemestrina",0.0277685216039098],
+                            ["Magnetospirillum gryphiswaldense",0.0277685216039098],
+                            ["Marburg marburgvirus",0.0277685216039098],
+                            ["Thermoplasma acidophilum",0.0277685216039098],
+                            ["Ustilago maydis",0.0277685216039098],
+                            ["Zaire ebolavirus",0.0277685216039098],
+                            ["Zymomonas mobilis",0.0277685216039098],
+                            ["California encephalitis orthobunyavirus",0.0249916694435188],
+                            ["Escherichia coli,synthetic construct,Escherichia virus Qbeta",0.0249916694435188],
+                            ["Mesocricetus auratus",0.0249916694435188],
+                            ["Neurospora crassa",0.0249916694435188],
+                            ["Rhinovirus A",0.0249916694435188],
+                            ["Alphapapillomavirus 10",0.0222148172831278],
+                            ["Escherichia coli,Escherichia virus Qbeta",0.0222148172831278],
+                            ["Escherichia virus Mu",0.0222148172831278],
+                            ["Klebsiella phage phiKO2",0.0222148172831278],
+                            ["Lechevalieria aerocolonigenes",0.0222148172831278],
+                            ["Leishmania infantum",0.0222148172831278],
+                            ["Naegleria gruberi",0.0222148172831278],
+                            ["Nostoc sp. PCC 7120",0.0222148172831278],
+                            ["Oceanobacter kriegii",0.0222148172831278],
+                            ["Pyrococcus woesei",0.0222148172831278],
+                            ["Rickettsia felis",0.0222148172831278],
+                            ["Streptomyces fimbriatus",0.0222148172831278],
+                            ["Thalassobius gelatinovorus",0.0222148172831278],
+                            ["Thermoanaerobacter ethanolicus",0.0222148172831278],
+                            ["Vulcanisaeta distributa",0.0222148172831278],
+                            ["Zea mays",0.0222148172831278],
+                            ["Aspergillus restrictus",0.0194379651227369],
+                            ["Equine arteritis virus",0.0194379651227369],
+                            ["Equus caballus",0.0194379651227369],
+                            ["Leptotrichia buccalis",0.0194379651227369],
+                            ["Marinitoga piezophila",0.0194379651227369],
+                            ["Mopeia Lassa virus reassortant 29",0.0194379651227369],
+                            ["Nanoarchaeum equitans",0.0194379651227369],
+                            ["Pseudomonas phage JBD30",0.0194379651227369],
+                            ["Ruminiclostridium thermocellum",0.0194379651227369],
+                            ["Sulfolobus shibatae",0.0194379651227369],
+                            ["Vanderwaltozyma polyspora",0.0194379651227369],
+                            ["Variola virus",0.0194379651227369],
+                            ["Yersinia pseudotuberculosis",0.0194379651227369],
+                            ["Bombyx mori",0.0166611129623459],
+                            ["Campylobacter jejuni",0.0166611129623459],
+                            ["Cryphonectria parasitica",0.0166611129623459],
+                            ["Desulfitobacterium hafniense",0.0166611129623459],
+                            ["Encephalitozoon cuniculi",0.0166611129623459],
+                            ["Escherichia coli,Homo sapiens",0.0166611129623459],
+                            ["Heliothis virescens",0.0166611129623459],
+                            ["Human polyomavirus 5",0.0166611129623459],
+                            ["Leptographium truncatum",0.0166611129623459],
+                            ["Methanococcus maripaludis",0.0166611129623459],
+                            ["Mus musculus polyomavirus 1",0.0166611129623459],
+                            ["Plasmodium vivax",0.0166611129623459],
+                            ["Shigella flexneri",0.0166611129623459],
+                            ["Streptomyces sp.",0.0166611129623459],
+                            ["Thermococcus sp. 9oN-7",0.0166611129623459],
+                            ["Trichoderma reesei",0.0166611129623459],
+                            ["Xanthomonas",0.0166611129623459],
+                            ["Desmodium yellow mottle virus",0.0138842608019549],
+                            ["Escherichia virus T5",0.0138842608019549],
+                            ["Kocuria varians",0.0138842608019549],
+                            ["Mammalian orthoreovirus",0.0138842608019549],
+                            ["Oryza sativa",0.0138842608019549],
+                            ["Rana catesbeiana",0.0138842608019549],
+                            ["Solanum tuberosum",0.0138842608019549],
+                            ["Tobacco mosaic virus",0.0138842608019549],
+                            ["Trypanosoma brucei",0.0138842608019549],
+                            ["[Bacillus] caldolyticus",0.0111074086415639],
+                            ["Alphapapillomavirus 7",0.0111074086415639],
+                            ["Aspergillus oryzae",0.0111074086415639],
+                            ["Avian sarcoma virus",0.0111074086415639],
+                            ["Bacillus firmus",0.0111074086415639],
+                            ["Bacteroides thetaiotaomicron",0.0111074086415639],
+                            ["Borreliella burgdorferi",0.0111074086415639],
+                            ["Bradyrhizobium japonicum",0.0111074086415639],
+                            ["Canavalia lineata",0.0111074086415639],
+                            ["Canis sp.",0.0111074086415639],
+                            ["Carnation Italian ringspot virus",0.0111074086415639],
+                            ["Chikungunya virus",0.0111074086415639],
+                            ["Chlamydomonas moewusii",0.0111074086415639],
+                            ["Clostridium acetobutylicum",0.0111074086415639],
+                            ["Cowpea chlorotic mottle virus",0.0111074086415639],
+                            ["Cupriavidus necator",0.0111074086415639],
+                            ["Cypovirus 1",0.0111074086415639],
+                            ["Cyprinid herpesvirus 3",0.0111074086415639],
+                            ["Escherichia virus HK022",0.0111074086415639],
+                            ["Escherichia virus N15",0.0111074086415639],
+                            ["Expression vector pET3-H2A",0.0111074086415639],
+                            ["Gremmeniella abietina",0.0111074086415639],
+                            ["Methanolobus psychrophilus",0.0111074086415639],
+                            ["Methanosarcina acetivorans",0.0111074086415639],
+                            ["Methylophilus methylotrophus",0.0111074086415639],
+                            ["Mycobacterium sp. JLS",0.0111074086415639],
+                            ["Mycoplasma",0.0111074086415639],
+                            ["Myxococcus xanthus",0.0111074086415639],
+                            ["Nicotiana glutinosa",0.0111074086415639],
+                            ["Nocardia otitidiscaviarum",0.0111074086415639],
+                            ["Parechovirus A",0.0111074086415639],
+                            ["Pariacoto virus",0.0111074086415639],
+                            ["Physcomitrella patens",0.0111074086415639],
+                            ["Podospora anserina",0.0111074086415639],
+                            ["Pseudomonas alcaligenes",0.0111074086415639],
+                            ["Pseudomonas phage PRR1",0.0111074086415639],
+                            ["Pseudomonas virus Pf1",0.0111074086415639],
+                            ["Pyrococcus sp. GI-H",0.0111074086415639],
+                            ["Rhodobacter sphaeroides",0.0111074086415639],
+                            ["Rice dwarf virus",0.0111074086415639],
+                            ["Rodent protoparvovirus 1",0.0111074086415639],
+                            ["Saccharomyces cerevisiae,Mus musculus",0.0111074086415639],
+                            ["Sathuperi orthobunyavirus",0.0111074086415639],
+                            ["Streptococcus thermophilus",0.0111074086415639],
+                            ["Streptomyces azureus",0.0111074086415639],
+                            ["Synechocystis sp. PCC 6803",0.0111074086415639],
+                            ["uncultured organism",0.0111074086415639],
+                            ["[Candida] glabrata",0.00833055648117294],
+                            ["Alfalfa mosaic virus",0.00833055648117294],
+                            ["Bacillus thermoamylovorans",0.00833055648117294],
+                            ["Bacillus virus SPO1",0.00833055648117294],
+                            ["Bacteroides fragilis",0.00833055648117294],
+                            ["Carnivore protoparvovirus 1",0.00833055648117294],
+                            ["Ebola virus sp.",0.00833055648117294],
+                            ["Escherichia virus phiX174",0.00833055648117294],
+                            ["Lachnospiraceae bacterium",0.00833055648117294],
+                            ["Oryzias latipes",0.00833055648117294],
+                            ["Thermococcus gorgonarius",0.00833055648117294],
+                            ["Triticum sp.",0.00833055648117294],
+                            ["[Bacillus] caldotenax",0.00555370432078196],
+                            ["Anopheles gambiae",0.00555370432078196],
+                            ["Avian myeloblastosis virus",0.00555370432078196],
+                            ["Bacillus licheniformis",0.00555370432078196],
+                            ["Barley stripe mosaic virus",0.00555370432078196],
+                            ["Bean pod mottle virus",0.00555370432078196],
+                            ["Black beetle virus",0.00555370432078196],
+                            ["Bovine immunodeficiency virus",0.00555370432078196],
+                            ["Bovine viral diarrhea virus 1",0.00555370432078196],
+                            ["Brachypodium distachyon",0.00555370432078196],
+                            ["Drosophila subobscura",0.00555370432078196],
+                            ["Equine infectious anemia virus",0.00555370432078196],
+                            ["Eremothecium gossypii",0.00555370432078196],
+                            ["Escherichia virus Qbeta",0.00555370432078196],
+                            ["Grosmannia penicillata",0.00555370432078196],
+                            ["Homo sapiens,Rattus rattus",0.00555370432078196],
+                            ["Lactococcus phage TP901-1",0.00555370432078196],
+                            ["Methanosarcina thermophila",0.00555370432078196],
+                            ["Micromonospora echinospora",0.00555370432078196],
+                            ["Murine leukemia-related retroviruses",0.00555370432078196],
+                            ["Mycoplasma penetrans",0.00555370432078196],
+                            ["Ophiostoma novo-ulmi",0.00555370432078196],
+                            ["Paraburkholderia rhizoxinica",0.00555370432078196],
+                            ["Planomicrobium okeanokoites",0.00555370432078196],
+                            ["Reovirus sp.",0.00555370432078196],
+                            ["Streptococcus sanguinis",0.00555370432078196],
+                            ["Streptomyces",0.00555370432078196],
+                            ["Streptomyces graminofaciens",0.00555370432078196],
+                            ["Sulfolobus tokodaii",0.00555370432078196],
+                            ["Tanapox virus",0.00555370432078196],
+                            ["Thermovibrio ammonificans",0.00555370432078196],
+                            ["Trichoplax adhaerens",0.00555370432078196],
+                            ["Xanthomonas oryzae",0.00555370432078196],
+                            ["Zika virus",0.00555370432078196],
+                            ["Bacillus anthracis",0.00277685216039098],
+                            ["Bacteroides sp. 3_1_23",0.00277685216039098],
+                            ["Carassius auratus",0.00277685216039098],
+                            ["Cronobacter sakazakii",0.00277685216039098],
+                            ["Cucumber green mottle mosaic virus",0.00277685216039098],
+                            ["Enterobacter phage Enc34",0.00277685216039098],
+                            ["Enterobacteria phage phi21",0.00277685216039098],
+                            ["Escherichia virus alpha3",0.00277685216039098],
+                            ["Fusobacterium nucleatum",0.00277685216039098],
+                            ["Hibiscus latent Singapore virus",0.00277685216039098],
+                            ["Homo sapiens,Sus scrofa",0.00277685216039098],
+                            ["Jembrana disease virus",0.00277685216039098],
+                            ["Lachnospiraceae bacterium NK4A179",0.00277685216039098],
+                            ["Laribacter hongkongensis",0.00277685216039098],
+                            ["Leptotrichia shahii",0.00277685216039098],
+                            ["Measles morbillivirus",0.00277685216039098],
+                            ["Methanopyrus kandleri",0.00277685216039098],
+                            ["Norovirus",0.00277685216039098],
+                            ["Orthopteran ambidensovirus 1",0.00277685216039098],
+                            ["Pepino mosaic virus",0.00277685216039098],
+                            ["Physalis mottle virus",0.00277685216039098],
+                            ["Plasmid RSF1010",0.00277685216039098],
+                            ["Primate T-lymphotropic virus 1",0.00277685216039098],
+                            ["Providence virus",0.00277685216039098],
+                            ["Rana pipiens",0.00277685216039098],
+                            ["Ribgrass mosaic virus",0.00277685216039098],
+                            ["Ricinus communis",0.00277685216039098],
+                            ["Streptococcus sp. 'group G',Homo sapiens",0.00277685216039098],
+                            ["Streptomyces actuosus",0.00277685216039098],
+                            ["Streptomyces lividans",0.00277685216039098],
+                            ["Streptomyces virginiae",0.00277685216039098],
+                            ["Thermotoga maritima,synthetic construct",0.00277685216039098],
+                            ["Thermus aquaticus,Sulfolobus solfataricus",0.00277685216039098],
+                            ["Tobacco albetovirus 1",0.00277685216039098],
+                            ["Tobacco mild green mosaic virus",0.00277685216039098],
+                            ["Tragopogon ruthenicus",0.00277685216039098],
+                            ["Turnip yellow mosaic virus",0.00277685216039098],
+                            ["Weissella viridescens",0.00277685216039098]
 
-        <!-- Post Content Column -->
-        <div class="col-lg-8">
+                        ]
+                }]
+            };
+            // 图表初始化函数
+            var chart = Highcharts.chart('organism', options);
+        </script>
+      <div id="classification"></div>
+      <script>
+          // 图表配置
+          var options = {
+              chart: {
+                  type: 'pie',
+                  options3d: {
+                      enabled: true,
+                      alpha: 45,
+                      beta: 0
+                  }//指定图表的类型，默认是折线图（line）
+              },
+              title: {
+                  text: 'By Classification'                 // 标题
+              },
+              credits: {
+                  enabled: false
+              },
+              tooltip: {
+                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              },
+              plotOptions: {
+                  pie: {
+                      allowPointSelect: true,
+                      cursor: 'pointer',
+                      depth: 35,
+                      dataLabels: {
+                          enabled: true,
+                          format: '{point.name}'
+                      }
+                  }
+              },
+              series: [{
+                  type: 'pie',
+                  name: 'classification share',
+                  data: [
+                      ["RIBOSOME",19.903504880213],
+                      ["TRANSFERASE/DNA",9.0699866903283],
+                      ["TRANSCRIPTION/DNA",8.2187222715173],
+                      ["HYDROLASE/DNA",8.04403283052351],
+                      ["DNA BINDING PROTEIN/DNA",5.70652173913043],
+                      ["STRUCTURAL PROTEIN/DNA",5.68156610470275],
+                      ["TRANSCRIPTION",2.99744897959184],
+                      ["Ribosome/Antibiotic",2.80612244897959],
+                      ["RNA BINDING PROTEIN/RNA",2.6314330079858],
+                      ["TRANSFERASE/RNA",1.88830967169476],
+                      ["DNA BINDING PROTEIN",1.56943212067436],
+                      ["HYDROLASE/RNA",1.51120230700976],
+                      ["HYDROLASE",1.28105590062112],
+                      ["SPLICING",1.20618899733807],
+                      ["RNA BINDING PROTEIN",1.00931677018634],
+                      ["TRANSLATION",1.00099822537711],
+                      ["VIRUS",0.998225377107365],
+                      ["TRANSCRIPTION/DNA/RNA",0.80689884649512],
+                      ["ISOMERASE/DNA",0.779170363797693],
+                      ["Transferase, Lyase/DNA",0.695984915705413],
+                      ["GENE REGULATION",0.6627107364685],
+                      ["GENE REGULATION/DNA",0.657165039929015],
+                      ["TRANSFERASE",0.657165039929015],
+                      ["Viral protein/RNA",0.634982253771074],
+                      ["ISOMERASE",0.61002661934339],
+                      ["RECOMBINATION/DNA",0.571206743566992],
+                      ["REPLICATION/DNA",0.532386867790595],
+                      ["TRANSCRIPTION REGULATOR/DNA",0.529614019520852],
+                      ["LIGASE/RNA",0.524068322981367],
+                      ["Virus/RNA",0.460292812777285],
+                      ["TRANSCRIPTION, TRANSFERASE/DNA",0.451974267968057],
+                      ["IMMUNE SYSTEM",0.429791481810115],
+                      ["TRANSCRIPTION/RNA",0.402062999112689],
+                      ["VIRAL PROTEIN",0.379880212954747],
+                      ["HYDROLASE/RNA/DNA",0.321650399290151],
+                      ["Immune System/RNA",0.305013309671695],
+                      ["REPLICATION, TRANSFERASE/DNA",0.288376220053239],
+                      ["TRANSCRIPTION ACTIVATOR/DNA",0.288376220053239],
+                      ["RIBOSOME/RIBOSOME INHIBITOR",0.282830523513753],
+                      ["TRANSFERASE/DNA/RNA",0.266193433895297],
+                      ["OXIDOREDUCTASE/DNA",0.249556344276841],
+                      ["DNA/ANTIBIOTIC",0.241237799467613],
+                      ["HYDROLASE/DNA/RNA",0.23846495119787],
+                      ["Transcription, TRANSFERASE/DNA/RNA",0.23846495119787],
+                      ["LYASE/DNA",0.232919254658385],
+                      ["TRANSCRIPTION,TRANSFERASE/DNA-RNA HYBRID",0.221827861579414],
+                      ["TRANSLATION/RNA",0.221827861579414],
+                      ["METAL BINDING PROTEIN/DNA",0.213509316770186],
+                      ["hydrolase, lyase/DNA",0.205190771960958],
+                      ["ANTITUMOR PROTEIN/DNA",0.202417923691216],
+                      ["GENE REGULATION/RNA",0.183007985803017],
+                      ["REPLICATION",0.183007985803017],
+                      ["TRANSCRIPTION/RNA/DNA",0.183007985803017],
+                      ["RIBOSOME/HYDROLASE",0.171916592724046],
+                      ["IMMUNE SYSTEM/DNA",0.166370896184561],
+                      ["CELL CYCLE/DNA",0.152506654835847],
+                      ["Viral protein/DNA",0.152506654835847],
+                      ["TRANSFERASE/DNA-RNA HYBRID",0.149733806566105],
+                      ["DNA-BINDING PROTEIN/DNA",0.146960958296362],
+                      ["STRUCTURAL PROTEIN/RNA",0.146960958296362],
+                      ["ISOMERASE/DNA/ANTIBIOTIC",0.144188110026619],
+                      ["Ligase/DNA",0.135869565217391],
+                      ["RECOMBINATION",0.135869565217391],
+                      ["CELL CYCLE",0.127551020408163],
+                      ["TRANSCRIPTION, TRANSFERASE/DNA-RNA HYBRID",0.127551020408163],
+                      ["Transferase,Lyase/DNA",0.124778172138421],
+                      ["TATA BOX-BINDING PROTEIN (TBP)",0.122005323868678],
+                      ["LIGASE",0.119232475598935],
+                      ["DNA BINDING PROTEIN, HYDROLASE/DNA",0.116459627329193],
+                      ["ISOMERASE/DNA/ISOMERASE INHIBITOR",0.116459627329193],
+                      ["TOXIN/RNA",0.116459627329193],
+                      ["SIGNALING PROTEIN/STRUCTURAL PROTEIN/DNA",0.110913930789707],
+                      ["Lyase,Transferase/DNA",0.105368234250222],
+                      ["PROTEIN/DNA",0.102595385980479],
+                      ["RIBOSOMAL PROTEIN/RNA",0.0998225377107365],
+                      ["STRUCTURAL PROTEIN/HYDROLASE/DNA",0.0998225377107365],
+                      ["TRANSCRIPTION,TRANSFERASE/DNA/RNA HYBRID",0.0998225377107365],
+                      ["NUCLEAR PROTEIN/DNA",0.0970496894409938],
+                      ["APOPTOSIS/DNA",0.0942768411712511],
+                      ["TRANSCRIPTION REGULATOR",0.0942768411712511],
+                      ["DNA BINDING",0.0915039929015084],
+                      ["HYDROLASE, LIGASE/DNA",0.0915039929015084],
+                      ["Isomerase/RNA",0.0915039929015084],
+                      ["RIBOSOME/INHIBITOR",0.0915039929015084],
+                      ["TRANSFERASE/ELECTRON TRANSPORT/DNA",0.0915039929015084],
+                      ["ISOMERASE/DNA/INHIBITOR",0.0887311446317657],
+                      ["ligase, lyase/DNA",0.0887311446317657],
+                      ["TRANSCRIPTION  REGULATOR/DNA",0.0887311446317657],
+                      ["immune system / RNA",0.0859582963620231],
+                      ["SPLICING/RNA",0.0859582963620231],
+                      ["TRANSCRIPTION/DNA-RNA HYBRID",0.0859582963620231],
+                      ["RECOMBINATION,VIRAL PROTEIN/DNA",0.0831854480922804],
+                      ["TRANSFERASE/DNA, LIGASE/DNA",0.0831854480922804],
+                      ["Viral Protein/RNA/Immune System",0.0804125998225377],
+                      ["RNA/RNA BINDING PROTEIN",0.077639751552795],
+                      ["SIGNALING PROTEIN/RNA",0.077639751552795],
+                      ["METAL BINDING PROTEIN",0.0748669032830524],
+                      ["TRANSFERASE, HYDROLASE/DNA",0.0748669032830524],
+                      ["CHROMATIN BINDING PROTEIN / DNA",0.0720940550133097],
+                      ["RNA BINDING PROTEIN/RNA/DNA",0.069321206743567],
+                      ["Transferase/RNA/DNA",0.069321206743567],
+                      ["NUCLEAR PROTEIN",0.0665483584738243],
+                      ["OXIDOREDUCTASE",0.0665483584738243],
+                      ["PROTEIN-DNA COMPLEX",0.0665483584738243],
+                      ["TRANSCRIPTION, TRANSFERASE/ANTIBIOTIC",0.0665483584738243],
+                      ["TRANSFERASE, DNA BINDING PROTEIN/DNA",0.0665483584738243],
+                      ["DNA BINDING PROTEIN/RNA/DNA",0.0637755102040816],
+                      ["ISOMERASE/RNA BINDING PROTEIN/RNA",0.061002661934339],
+                      ["POLYMERASE",0.061002661934339],
+                      ["VIRAL PROTEIN, RNA BINDING PROTEIN",0.061002661934339],
+                      ["Virus/DNA",0.061002661934339],
+                      ["IMMUNE SYSTEM/RNA/DNA",0.0554569653948536],
+                      ["NUCLEAR PROTEIN/RNA",0.0554569653948536],
+                      ["NUCLEIC ACID BINDING PROTEIN/DNA/RNA",0.0554569653948536],
+                      ["TRANSFERASE/DNA/INHIBITOR",0.0554569653948536],
+                      ["TRANSPORT PROTEIN",0.0554569653948536],
+                      ["IMMUNE SYSTEM/DNA/RNA",0.0526841171251109],
+                      ["RNA Binding Protein/DNA",0.0526841171251109],
+                      ["TRANSFERASE/DNA/TRANSFERASE INHIBITOR",0.0526841171251109],
+                      ["CHROMATIN BINDING PROTEIN/DNA",0.0499112688553682],
+                      ["DNA/DNA binding protein",0.0499112688553682],
+                      ["LYASE/RNA",0.0499112688553682],
+                      ["REPLICATION INHIBITOR/DNA",0.0499112688553682],
+                      ["DNA BINDING PROTEN/DNA",0.0471384205856256],
+                      ["RIBOSOME/PROTEIN TRANSPORT",0.0471384205856256],
+                      ["TRANSLATION, TRANSFERASE/RNA",0.0471384205856256],
+                      ["ANTIVIRAL PROTEIN",0.0443655723158829],
+                      ["metal-binding protein,Transcription/DNA",0.0443655723158829],
+                      ["NUCLEAR PROTEIN/TRANSCRIPTION/DNA",0.0443655723158829],
+                      ["PROTEIN BINDING/VIRAL PROTEIN/DNA",0.0443655723158829],
+                      ["PROTEIN BINDING/VIRUS/DNA",0.0443655723158829],
+                      ["RNA-BINDING PROTEIN/RNA",0.0443655723158829],
+                      ["'STRUCTURAL PROTEIN/DNA",0.0443655723158829],
+                      ["STRUCTURAL PROTEIN/TRANSCRIPTION/DNA",0.0443655723158829],
+                      ["TOXIN/ANTITOXIN/DNA",0.0443655723158829],
+                      ["TRANSFERASE/IMMUNE SYSTEM/DNA",0.0443655723158829],
+                      ["viral protein/dna/rna/inhibitor",0.0443655723158829],
+                      ["CHAPERONE/DNA",0.0415927240461402],
+                      ["DNA BINDING PROTEIN/RECOMBINATION/DNA",0.0415927240461402],
+                      ["TRANSFERASE, HYDROLASE/DNA/RNA/INHIBITOR",0.0415927240461402],
+                      ["CHAPERONE/RNA",0.0388198757763975],
+                      ["DNA/PEPTIDE",0.0388198757763975],
+                      ["OXIDOREDUCTASE/RNA",0.0388198757763975],
+                      ["REPLICATION, DNA BINDING PROTEIN/DNA",0.0388198757763975],
+                      ["RIBOSOMAL PROTEIN",0.0388198757763975],
+                      ["SIGNALING PROTEIN",0.0388198757763975],
+                      ["TRANSCRIPTION/TRANSFERASE/DNA/RNA",0.0388198757763975],
+                      ["VIRUS/VIRAL PROTEIN/RNA",0.0388198757763975],
+                      ["DNA",0.0360470275066548],
+                      ["DNA/TRANSFERASE",0.0360470275066548],
+                      ["RNA/PROTEIN",0.0360470275066548],
+                      ["Transcription, Transferase/DNA, RNA",0.0360470275066548],
+                      ["DNA LIGASE/DNA, TRANSFERASE",0.0332741792369122],
+                      ["DNA-BINDING",0.0332741792369122],
+                      ["RNA Binding protein / RNA",0.0332741792369122],
+                      ["TRANSCRIPTION/TRANSFERASE/DNA",0.0332741792369122],
+                      ["TRANSFERASE/TRANSCRIPTION ACTIVATOR/DNA",0.0332741792369122],
+                      ["ISOMERASE/BIOSYNTHETIC PROTEIN/RNA",0.0305013309671695],
+                      ["RNA",0.0305013309671695],
+                      ["ANTIVIRAL PROTEIN/RNA",0.0277284826974268],
+                      ["GENE REGULATION/DNA COMPLEX",0.0277284826974268],
+                      ["HYDROLASE/HYDROLASE INHIBITOR/DNA",0.0277284826974268],
+                      ["LIGASE/RNA/DNA",0.0277284826974268],
+                      ["PROTEIN TRANSPORT",0.0277284826974268],
+                      ["transcription repressor",0.0277284826974268],
+                      ["TRANSCRIPTION, DNA BINDING PROTEIN/DNA",0.0277284826974268],
+                      ["TRANSFERASE, HYDROLASE/RNA/DNA",0.0277284826974268],
+                      ["Transferase/DNA, Lyase/DNA",0.0277284826974268],
+                      ["TRANSFERASE/INHIBITOR/DNA",0.0277284826974268],
+                      ["COMPLEX (ELONGATION FACTOR/TRNA)",0.0249556344276841],
+                      ["DNA-BINDING/REGULATORY PROTEIN",0.0249556344276841],
+                      ["HYDROLASE/DNA-RNA hybrid",0.0249556344276841],
+                      ["hydrolase/RNA binding protein/RNA",0.0249556344276841],
+                      ["IMMUNE SYSTEM/HYDROLASE/RNA",0.0249556344276841],
+                      ["TRANSCRIPTIONAL REPRESSOR",0.0249556344276841],
+                      ["TRANSFERASE, HYDROLASE/RNA/DNA/INHIBITOR",0.0249556344276841],
+                      ["Transferase,replication/DNA",0.0249556344276841],
+                      ["ANTITOXIN/TOXIN/DNA",0.0221827861579414],
+                      ["de novo design/DNA",0.0221827861579414],
+                      ["DE NOVO PROTEIN/DNA",0.0221827861579414],
+                      ["DNA BINDING PROTEIN, TRANSCRIPTION/DNA",0.0221827861579414],
+                      ["HYDROLASE / RNA / DNA",0.0221827861579414],
+                      ["HYDROLASE,LYASE/DNA",0.0221827861579414],
+                      ["Isomerase/DNA/RNA",0.0221827861579414],
+                      ["LIGASE/DNA/RNA",0.0221827861579414],
+                      ["Protein binding/DNA",0.0221827861579414],
+                      ["PROTEIN TRANSPORT/NUCLEAR PROTEIN/RNA",0.0221827861579414],
+                      ["PROTEIN TRANSPORT/TRANSCRIPTION/DNA",0.0221827861579414],
+                      ["RNA  BINDING PROTEIN/RNA",0.0221827861579414],
+                      ["TRANSCRIPTION FACTOR",0.0221827861579414],
+                      ["TRANSCRIPTION FACTOR/DNA",0.0221827861579414],
+                      ["transcription/dna/rna/antibiotic",0.0221827861579414],
+                      ["TRANSCRIPTION/PROTEIN BINDING/DNA",0.0221827861579414],
+                      ["transcription/transport protein/DNA",0.0221827861579414],
+                      ["TRANSCRIPTIONAL ACTIVATOR",0.0221827861579414],
+                      ["TRANSFERASE, HYDROLASE/DNA/INHIBITOR",0.0221827861579414],
+                      ["TRANSFERASE, HYDROLASE/DNA/RNA",0.0221827861579414],
+                      ["TRANSFERASE/DNA COMPLEX",0.0221827861579414],
+                      ["TRANSPORT PROTEIN,SIGNALING PROTEIN/DNA",0.0221827861579414],
+                      ["TRANSPORT PROTEIN/DNA",0.0221827861579414],
+                      ["VIRAL PROTEIN,RNA BINDING PROTEIN/RNA",0.0221827861579414],
+                      ["nucleic acid binding protein/dna",0.0194099378881988],
+                      ["PROTEIN BINDING/RNA",0.0194099378881988],
+                      ["protein/RNA complex",0.0194099378881988],
+                      ["RNA POLYMERASE",0.0194099378881988],
+                      ["TRANSCRIPTION ACTIVATOR/TRANSFERASE/DNA",0.0194099378881988],
+                      ["TRANSCRIPTION REGULATOR/RNA",0.0194099378881988],
+                      ["TRANSCRIPTION, TRANSFERASE/DNA/RNA HYBRID",0.0194099378881988],
+                      ["COMPLEX (AMINOACYL-TRNA SYNTHASE/TRNA)",0.0166370896184561],
+                      ["DNA/LYASE/TRANSFERASE",0.0166370896184561],
+                      ["HYDROLASE/DNA/ANTIBIOTIC",0.0166370896184561],
+                      ["HYDROLASE/TRANSFERASE/DNA",0.0166370896184561],
+                      ["Hydrolase-DNA complex",0.0166370896184561],
+                      ["IMMUNE SYSTEM/INHIBITOR",0.0166370896184561],
+                      ["LIGASE/DNA-BINDING PROTEIN/DNA",0.0166370896184561],
+                      ["NUCLEAR RECEPTOR",0.0166370896184561],
+                      ["RECOMBINATION, DNA",0.0166370896184561],
+                      ["RIBOSOME/TRANSLATION",0.0166370896184561],
+                      ["RNA, RIBOSOMAL PROTEIN",0.0166370896184561],
+                      ["splicing/DNA/RNA",0.0166370896184561],
+                      ["Transcription repressor/DNA",0.0166370896184561],
+                      ["TRANSCRIPTION, TRANSFERASE",0.0166370896184561],
+                      ["TRANSCRIPTION/DNA BINDING PROTEIN/DNA",0.0166370896184561],
+                      ["TRANSCRIPTION/DNA/ANTIBIOTIC",0.0166370896184561],
+                      ["ALU RIBONUCLEOPROTEIN PARTICLE",0.0138642413487134],
+                      ["CYTOKINE/DNA",0.0138642413487134],
+                      ["RNA BINDING PROTEIN/DNA/RNA",0.0138642413487134],
+                      ["TRANLATION/RNA",0.0138642413487134],
+                      ["TRANSFERASE,TRANSCRIPTION/DNA",0.0138642413487134],
+                      ["AMINOACYL-TRNA SYNTHETASE",0.0110913930789707],
+                      ["Carbohydrate binding protein/DNA",0.0110913930789707],
+                      ["chromatin-binding protein/DNA",0.0110913930789707],
+                      ["COMPLEX (TRANSCRIPTION ACTIVATOR/DNA)",0.0110913930789707],
+                      ["DNA BINDING PROTEIN, DNA",0.0110913930789707],
+                      ["DNA BINDING PROTEIN/HYDROLASE/DNA",0.0110913930789707],
+                      ["DNA, RNA BINDING PROTEIN/DNA",0.0110913930789707],
+                      ["DNA/METAL BINDING PROTEIN",0.0110913930789707],
+                      ["HYDROLASE, TRANSFERASE/dna",0.0110913930789707],
+                      ["HYDROLASE/DNA complex",0.0110913930789707],
+                      ["INTEGRASE/DNA",0.0110913930789707],
+                      ["ISOMERASE/ISOMERASE Inhibitor/DNA",0.0110913930789707],
+                      ["LYASE",0.0110913930789707],
+                      ["Membrane Protein/RNA",0.0110913930789707],
+                      ["METAL BINDING PROTEIN/RNA",0.0110913930789707],
+                      ["PROTEIN/DNA COMPLEX",0.0110913930789707],
+                      ["RECEPTOR/DNA",0.0110913930789707],
+                      ["RECOMBINATION/INHIBITOR/DNA",0.0110913930789707],
+                      ["REPLICATION ACTIVATOR/DNA",0.0110913930789707],
+                      ["RIBONUCLEOPROTEIN/RNA",0.0110913930789707],
+                      ["RNA AND DNA BINDING PROTEIN/DNA",0.0110913930789707],
+                      ["RNA BINDING PROTEIN/TRANSFERASE/RNA",0.0110913930789707],
+                      ["RNA/RNA binding",0.0110913930789707],
+                      ["SYNTHETASE",0.0110913930789707],
+                      ["Thansferase/DNA",0.0110913930789707],
+                      ["TRANSCRIPTION REGULATION",0.0110913930789707],
+                      ["TRANSCRIPTION REGULATION/DNA",0.0110913930789707],
+                      ["TRANSCRIPTION, REPLICATION/DNA",0.0110913930789707],
+                      ["TRANSCRIPTION, RNA BINDING PROTEIN/RNA",0.0110913930789707],
+                      ["TRANSCRIPTIONAL REGULATION",0.0110913930789707],
+                      ["TRANSFERASE, TRANSCRIPTION/DNA",0.0110913930789707],
+                      ["Transferase/Antibody/DNA",0.0110913930789707],
+                      ["TRANSFERASE/RIBOSOMAL PROTEIN/RNA",0.0110913930789707],
+                      ["TRANSFERASE/TRANSCRIPTION",0.0110913930789707],
+                      ["TRANSFERASE/TRANSFERASE INHIBITOR",0.0110913930789707],
+                      ["TRANSFERASE/TRANSFERASE REGULATOR/DNA",0.0110913930789707],
+                      ["COMPLEX (METHYLTRANSFERASE/TRNA)",0.00831854480922804],
+                      ["HELICASE",0.00831854480922804],
+                      ["HYDROLASE,TRANSFERASE/DNA",0.00831854480922804],
+                      ["LIGASE/LIGASE INHIBITOR/DNA",0.00831854480922804],
+                      ["LYASE, TRANSFERASE/DNA",0.00831854480922804],
+                      ["NUCLEOTIDYLTRANSFERASE",0.00831854480922804],
+                      ["protein transport/RNA",0.00831854480922804],
+                      ["PROTEIN/RNA",0.00831854480922804],
+                      ["RNA AND DNA binding protein/RNA",0.00831854480922804],
+                      ["RNA/HYDROLASE/RNA BINDING PROTEIN",0.00831854480922804],
+                      ["RNA/RNA BINDING PROTEIN/HYDROLASE",0.00831854480922804],
+                      ["Transferase, ligase/DNA",0.00831854480922804],
+                      ["TRANSPORT PROTEIN/RNA",0.00831854480922804],
+                      ["VIRUS/VIRAL PROTEIN",0.00831854480922804],
+                      ["(HYDROLASE,LYASE)/DNA",0.00554569653948536],
+                      ["3-METHYLADENINE DNA GLYCOSYLASE I/DNA",0.00554569653948536],
+                      ["BLOOD CLOTTING/BLOOD CLOTTING REGULATOR",0.00554569653948536],
+                      ["COMPLEX (TRANSCRIPTION FACTOR/DNA)",0.00554569653948536],
+                      ["DNA Binding Protein, RNA Binding Protein/DNA",0.00554569653948536],
+                      ["DNA BINDING PROTEIN/DNA/RNA",0.00554569653948536],
+                      ["DNA RECOMBINATION/DNA",0.00554569653948536],
+                      ["DNA REPAIR,OXIDOREDUCTASE/DNA",0.00554569653948536],
+                      ["DNA/DNA-BINDING PROTEIN",0.00554569653948536],
+                      ["DNA/REPLICATION",0.00554569653948536],
+                      ["DNA/STRUCTURAL PROTEIN",0.00554569653948536],
+                      ["GENE REGULATION, STRUCTURAL PROTEIN/DNA",0.00554569653948536],
+                      ["GENE REGULATION/SIGNALLING PROTEIN/DNA",0.00554569653948536],
+                      ["HORMONE/DNA",0.00554569653948536],
+                      ["HORMONE/GROWTH FACTOR RECEPTOR/DNA",0.00554569653948536],
+                      ["Hormone/Growth factor/DNA",0.00554569653948536],
+                      ["hydrolase/hydrolase/RNA",0.00554569653948536],
+                      ["HYDROLASE/TRANSFERASE/RNA",0.00554569653948536],
+                      ["Replication/DNA/RNA",0.00554569653948536],
+                      ["RNA binding/RNA",0.00554569653948536],
+                      ["RNA POLYMERASE SIGMA FACTOR RPON/DNA",0.00554569653948536],
+                      ["RNA/immune system",0.00554569653948536],
+                      ["RNA/VIRUS/VIRAL PROTEIN",0.00554569653948536],
+                      ["SPLICING/DNA",0.00554569653948536],
+                      ["STRUCTURAL PROTEIN",0.00554569653948536],
+                      ["SUGAR BINDING PROTEIN",0.00554569653948536],
+                      ["TOXIN",0.00554569653948536],
+                      ["TOXIN/DNA",0.00554569653948536],
+                      ["Tranferase/DNA/RNA",0.00554569653948536],
+                      ["TRANSCRIPTION, viral protein/RNA",0.00554569653948536],
+                      ["TRANSFERASE, REPLICATION/DNA",0.00554569653948536],
+                      ["TRANSFERASE/TRANSCRIPTION/DNA-RNA HYBRID",0.00554569653948536],
+                      ["TRANSFERASE/TRANSFERASE INHIBITOR/DNA",0.00554569653948536],
+                      ["TRANSFERASE/VIRAL PROTEIN/RNA",0.00554569653948536],
+                      ["TRANSLATION REGULATOR/RNA",0.00554569653948536],
+                      ["TRANSPORT/DNA Binding/DNA",0.00554569653948536],
+                      ["VIRAL PROTEIN, TRANSFERASE/RNA",0.00554569653948536],
+                      ["VIRAL PROTEIN/DNA/INHIBITOR",0.00554569653948536],
+                      ["BACTERIOPHAGE HK022",0.00277284826974268],
+                      ["BIOSYNTHETIC/structural protein/RNA",0.00277284826974268],
+                      ["cell cycle/RNA",0.00277284826974268],
+                      ["COMPLEX (LIGASE/TRNA)",0.00277284826974268],
+                      ["DE-NOVO PROTEIN/RNA",0.00277284826974268],
+                      ["DNA REPLICATION",0.00277284826974268],
+                      ["DNA/RNA BINDING PROTEIN",0.00277284826974268],
+                      ["ENDONUCLEASE",0.00277284826974268],
+                      ["GENE REGULATION/ANTITUMOR PROTEIN/DNA",0.00277284826974268],
+                      ["Hydrolase, RNA BINDING PROTEIN/RNA",0.00277284826974268],
+                      ["Hydrolase/HYDROLASE INHIBITOR/RNA",0.00277284826974268],
+                      ["HYDROLASE/NUCLEAR PROTEIN",0.00277284826974268],
+                      ["LIGASE/tRNA",0.00277284826974268],
+                      ["NUCLEIC ACID BINDING PROTEIN/RNA",0.00277284826974268],
+                      ["Nucleotide binding protein/RNA",0.00277284826974268],
+                      ["Oxidoreductase/Transcription/RNA",0.00277284826974268],
+                      ["RIBOSOME/RNA",0.00277284826974268],
+                      ["RNA BINDING PROTEIN/ RNA",0.00277284826974268],
+                      ["RNA binding protein/Chimera/RNA",0.00277284826974268],
+                      ["RNA-BINDING",0.00277284826974268],
+                      ["rRNA BINDING protein/RNA",0.00277284826974268],
+                      ["TOXIN/ANTITOXIN",0.00277284826974268],
+                      ["TRANSCRIPTION REGULATOR/DNA/ANTIBIOTIC",0.00277284826974268],
+                      ["Transcription, Transferase/RNA",0.00277284826974268],
+                      ["TRANSCRIPTION/RNA/ANTIBIOTIC",0.00277284826974268],
+                      ["transcrption/DNA",0.00277284826974268],
+                      ["TRANSFERASE/PEPTIDE/RNA",0.00277284826974268],
+                      ["TRANSLATION/BIOSYNTHETIC PROTEIN/RNA",0.00277284826974268],
+                      ["TRANSLATION/RNA BINDING PROTEIN/RNA",0.00277284826974268],
+                      ["VIRAL PROTEIN/REPLICATION INHIBITOR/RNA",0.00277284826974268],
 
-          <!-- Title -->
-          <h1 class="mt-4">Post Title</h1>
-
-          <!-- Author -->
-          <p class="lead">
-            by
-            <a href="#">Start Bootstrap</a>
-          </p>
-
-          <hr>
-
-          <!-- Date/Time -->
-          <p>Posted on January 1, 2018 at 12:00 PM</p>
-
-          <hr>
-
-          <!-- Preview Image -->
-          <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
-
-          <hr>
-
-          <!-- Post Content -->
-          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-
-          <blockquote class="blockquote">
-            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer class="blockquote-footer">Someone famous in
-              <cite title="Source Title">Source Title</cite>
-            </footer>
-          </blockquote>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-
-          <hr>
-
-          <!-- Comments Form -->
-          <div class="card my-4">
-            <h5 class="card-header">Leave a Comment:</h5>
-            <div class="card-body">
-              <form>
-                <div class="form-group">
-                  <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
-            </div>
-          </div>
-
-          <!-- Single Comment -->
-          <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-              <h5 class="mt-0">Commenter Name</h5>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-            </div>
-          </div>
-
-          <!-- Comment with nested comments -->
-          <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-              <h5 class="mt-0">Commenter Name</h5>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-              <div class="media mt-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                  <h5 class="mt-0">Commenter Name</h5>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-              </div>
-
-              <div class="media mt-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                  <h5 class="mt-0">Commenter Name</h5>
-                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
-
-          <!-- Search Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Search</h5>
-            <div class="card-body">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Go!</button>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Categories Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Categories</h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Web Design</a>
-                    </li>
-                    <li>
-                      <a href="#">HTML</a>
-                    </li>
-                    <li>
-                      <a href="#">Freebies</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">JavaScript</a>
-                    </li>
-                    <li>
-                      <a href="#">CSS</a>
-                    </li>
-                    <li>
-                      <a href="#">Tutorials</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Side Widget</h5>
-            <div class="card-body">
-              You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-            </div>
-          </div>
-
-        </div>
+                  ]
+              }]
+          };
+          // 图表初始化函数
+          var chart = Highcharts.chart('classification', options);
+      </script>
 
       </div>
-      <!-- /.row -->
-
     </div>
-    <!-- /.container -->
-
-    <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">Copyright © Tianjin University Institude of Computational Biology 2018</p>
       </div>
       <!-- /.container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
 
   </body>
 

@@ -70,15 +70,53 @@
           To facilite the relevent research, all the data on the NABP database are publicly available  for non-commercial use, distribution,
           and reproduction in any medium ,you can download them from the links below.<br>
         </p>
-          <p>Redundant set</p>
+          <b>Full dataset: </b><a href="download/allData.csv"><button class="btn btn-dark">Download</button></a>
         <hr>
-          <p>Non-redundant set</p>
-          <hr>
-          <!-- Post Content Column -->
-          <div style="height: 800px">
-          </div>
+          The data file we provided contains information of each entry arranged as following:<br>
         </blockquote>
-      </div>
+
+        <dl class="row">
+          <dt class="col-sm-3">PDB ID</dt>
+          <dd class="col-sm-9">the unique Protein Data Bank identifier for each interaction.</dd>
+
+          <dt class="col-sm-3">Protein chain ID</dt>
+          <dd class="col-sm-9">the chain identifier for the protein in the interaction.</dd>
+
+          <dt  class="col-sm-3">NA chain ID</dt>
+          <dd  class="col-sm-9">the chain identifier for the nucleic acid in the interaction.</dd>
+
+          <dt  class="col-sm-3">protein_resno</dt>
+          <dd  class="col-sm-9">conatining residue numbers for the binding site residues in the protein.</dd>
+
+          <dt  class="col-sm-3">protein_resnames</dt>
+          <dd  class="col-sm-9">containing formatted residue names of the binding site residues in the protein.</dd>
+
+          <dt  class="col-sm-3">NA_resno</dt>
+          <dd  class="col-sm-9">conatining residue numbers for the binding site nucleotide in the nucleic acid.</dd>
+
+          <dt  class="col-sm-3">NA_resnames</dt>
+          <dd  class="col-sm-9">containing formatted nucleotide names of the binding site nucleotides in the nucleic acid.</dd>
+
+          <dt  class="col-sm-3">type</dt>
+          <dd  class="col-sm-9">the interaction type(protein-DNA interaction or protein-RNA interaction).</dd>
+
+          <dt  class="col-sm-3">protein_sequence</dt>
+          <dd  class="col-sm-9">the sequence of corresponding protein chain.</dd>
+
+          <dt  class="col-sm-3">NA_sequence</dt>
+          <dd  class="col-sm-9">the sequence of the corresponding nucleic acid chain.</dd>
+
+          <dt  class="col-sm-3">Uniprot_entry</dt>
+          <dd  class="col-sm-9">the mapped Uniprot entry of the corresponding protein chain.</dd>
+
+          <dt  class="col-sm-3">Classification</dt>
+          <dd  class="col-sm-9">mmCIF keywords describing this structure.</dd>
+
+          <dt  class="col-sm-3">Source</dt>
+          <dd  class="col-sm-9">organism name of this PDB struction.</dd>
+        </dl>
+
+          </div>
       <!-- /.row -->
 
     <!-- /.container -->

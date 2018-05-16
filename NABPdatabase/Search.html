@@ -1,24 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>NABP Database</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>NABP Database</title>
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <!-- Custom styles for this template -->
-    <link href="css/blog-post.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="css/blog-post.css" >
+        <script src="js/jquery-1.12.4.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.dataTables.min.js"></script>
+        <script>
+            /* Formatting function for row details - modify as you need */
+            function format (d) {
+                // `d` is the original data object for the row
+                return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+                    '<tr>'+
+                    '<td>Protein sequence:</td>'+
+                    '<td  style="word-break:break-all">'+d.protein_sequence+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '<td>Nucleic acid-binding residues:</td>'+
+                    '<td  style="word-break:break-all">'+d.protein_resnames+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '<td>Nucleic acid sequence:</td>'+
+                    '<td style="word-break:break-all">'+d.NA_sequence+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '<td>protein binding nucleotide:</td>'+
+                    '<td  style="word-break:break-all">'+d.NA_resnames+'</td>'+
+                    '</tr>'+
+                    '</table>';
+            }
 
-  </head>
+            $(document).ready(function() {
+
+                var table = $('#example').DataTable(
+                    {
+                        initComplete: function () {
+
+                            this.api().columns(2).every(function () {
+                                var column = this;
+                                var select = $('<select><option value=""></option></select>')
+                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+                            });
+                            this.api().columns(5).every(function () {
+                                var column = this;
+                                var select = $('<select><option value=""></option></select>')
+                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+                            });
+                            this.api().columns(6).every(function () {
+                                var column = this;
+                                var select = $('<select><option value=""></option></select>')
+                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+                            });
+                        },
+
+
+
+
+                    "ajax": "data/allNAdata.txt",
+                    "columns": [
+                        {
+                            "className":      'details-control',
+                            "orderable":      false,
+                            "data":           null,
+                            "defaultContent": '',
+                        },
+                        {
+                            "data": 'PDB ID',
+                            "render": function (data, type, row) {
+                                return '<a href=" https://www.rcsb.org/structure/' + data + '" style="text-decoration: none;">' + data + '</a>';
+                            },
+                        },
+                        { "data": 'Source'},
+                        { "data": 'Protein chain ID', "orderable": false},
+
+                        { "data": 'NA chain ID', "orderable": false},
+
+                        { "data": 'type' },
+                        { "data": 'Classification'},
+                        { "data": 'Uniprot_entry',
+                            "orderable": false,
+                            "render": function ( data, type, row ) {
+                                return '<a href="http://www.uniprot.org/uniprot/'+ data+'" style="text-decoration: none;">'+data+'</a>';
+                            }
+
+
+                        }
+                    ],
+                    "order": [[1, 'asc']]
+                } );
+                  // Add event listener for opening and closing details
+                $('#example tbody').on('click', 'td.details-control', function () {
+                    var tr = $(this).closest('tr');
+                    var row = table.row( tr );
+
+                    if ( row.child.isShown() ) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    }
+                    else {
+                        // Open this row
+                        row.child( format(row.data()) ).show();
+                        tr.addClass('shown');
+                    }
+                } );
+            } );
+
+
+
+        </script>
+</head>
 
   <body>
 
@@ -64,28 +203,46 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
-        <table id="table_id" class="display">
+    <div class="container"  style="padding-top:3em;padding-bottom: 3em">
+        <table id="example" class="display" style="width:100%">
             <thead>
             <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
+                <th></th>
+                <th>PDB ID</th>
+                <th>Organism</th>
+                <th>Protein chain ID</th>
+                <th>NA chain ID</th>
+                <th>type</th>
+                <th>Classification</th>
+                <th>Uniprot entry</th>
             </tr>
+
+            <tr>
+                <th></th>
+                <th > </th>
+                <th >Organism</th>
+                <th > </th>
+                <th > </th>
+                <th>type</th>
+                <th >Classification</th>
+                <th > </th>
+            </tr>
+
             </thead>
-            <tbody>
+            <tfoot>
             <tr>
-                <td>Row 1 Data 1</td>
-                <td>Row 1 Data 2</td>
+                <th ></th>
+                <th >PDB ID</th>
+                <th>Organism</th>
+                <th >Protein chain ID</th>
+                <th >NA chain ID</th>
+                <th>type</th>
+                <th>Classification</th>
+                <th>Uniprot entry</th>
             </tr>
-            <tr>
-                <td>Row 2 Data 1</td>
-                <td>Row 2 Data 2</td>
-            </tr>
-            </tbody>
+            </tfoot>
         </table>
     </div>
-    <!-- /.container -->
-
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
@@ -98,10 +255,5 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready( function () {
-            $('#table_id').DataTable();
-        } );
-    </script>
   </body>
 </html>
