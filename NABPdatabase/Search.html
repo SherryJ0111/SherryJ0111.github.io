@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
   <!-- Custom styles for this template -->
   <link rel="stylesheet" href="css/blog-post.css" >
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <script src="js/jquery-1.12.4.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.dataTables.min.js"></script>
@@ -161,7 +162,7 @@
       <div class="input-group mb-3">
         <input type="text" id="keywords" class="form-control search-query" placeholder="Search by PDB ID,Uniprot entry,mmCIF keywords,organism etc" aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" onclick='document.getElementById("keywords").value=""'><i class="fa fa-search"></i>Clear</button>
+          <button class="btn btn-outline-secondary" onclick='document.getElementById("keywords").value=""'><i class="fas fa-redo"></i>Clear</button>
           <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i>Search</button>
         </div>
       </div>
@@ -187,7 +188,12 @@
                      Carbohydrate binding protein/DNA
                      </span>
         </a>
-        <a><i class="far fa-question-circle"></i></a>
+        <a href="Tutorial.html" style="color:#000000">
+            <span>
+            <i class="far fa-question-circle"></i>
+            </span>
+        </a>
+
       </div>
     </div>
   </div>
