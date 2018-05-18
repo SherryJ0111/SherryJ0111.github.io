@@ -1,255 +1,1018 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>NABP Database</title>
-        <!-- Bootstrap core CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    <!-- Custom styles for this template -->
-        <link rel="stylesheet" href="css/blog-post.css" >
-        <script src="js/jquery-1.12.4.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jquery.dataTables.min.js"></script>
-        <script>
-            /* Formatting function for row details - modify as you need */
-            function format (d) {
-                // `d` is the original data object for the row
-                return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-                    '<tr>'+
-                    '<td>Protein sequence:</td>'+
-                    '<td  style="word-break:break-all">'+d.protein_sequence+'</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                    '<td>Nucleic acid-binding residues:</td>'+
-                    '<td  style="word-break:break-all">'+d.protein_resnames+'</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                    '<td>Nucleic acid sequence:</td>'+
-                    '<td style="word-break:break-all">'+d.NA_sequence+'</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                    '<td>protein binding nucleotide:</td>'+
-                    '<td  style="word-break:break-all">'+d.NA_resnames+'</td>'+
-                    '</tr>'+
-                    '</table>';
-            }
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>NABP Database</title>
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="css/blog-post.css" >
+  <script src="js/jquery-1.12.4.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery.dataTables.min.js"></script>
+  <script>
+      /* Formatting function for row details - modify as you need */
+      function format (d) {
+          // `d` is the original data object for the row
+          return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+              '<tr>'+
+              '<td>Protein sequence:</td>'+
+              '<td  style="word-break:break-all">'+d.protein_sequence+'</td>'+
+              '</tr>'+
+              '<tr>'+
+              '<td>Nucleic acid-binding residues:</td>'+
+              '<td  style="word-break:break-all">'+d.protein_resnames+'</td>'+
+              '</tr>'+
+              '<tr>'+
+              '<td>Nucleic acid sequence:</td>'+
+              '<td style="word-break:break-all">'+d.NA_sequence+'</td>'+
+              '</tr>'+
+              '<tr>'+
+              '<td>protein binding nucleotide:</td>'+
+              '<td  style="word-break:break-all">'+d.NA_resnames+'</td>'+
+              '</tr>'+
+              '</table>';
+      }
+      $(document).ready(function() {
+          // Add event listener for opening and closing details
+          $("#tableWrapper").hide();
+          var table= $('#example').DataTable({
+              "ajax": "data/allNAdata.txt",
+              "dom": 'lrtip',
+              "columns": [
+                  {
+                      "className": 'details-control',
+                      "orderable": false,
+                      "data": null,
+                      "defaultContent": '',
+                  },
+                  {
+                      "data": 'PDB ID',
+                      "render": function (data, type, row) {
+                          return '<a href=" https://www.rcsb.org/structure/' + data + '" style="text-decoration: none;">' + data + '</a>';
+                      },
+                  },
+                  {"data": 'Source'},
+                  {"data": 'Protein chain ID', "orderable": false},
 
-            $(document).ready(function() {
+                  {"data": 'NA chain ID', "orderable": false},
 
-                var table = $('#example').DataTable(
-                    {
-                        initComplete: function () {
-
-                            this.api().columns(2).every(function () {
-                                var column = this;
-                                var select = $('<select><option value=""></option></select>')
-                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
-                                    .on('change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val ? '^' + val + '$' : '', true, false)
-                                            .draw();
-                                    });
-
-                                column.data().unique().sort().each(function (d, j) {
-                                    select.append('<option value="' + d + '">' + d + '</option>');
-                                });
-                            });
-                            this.api().columns(5).every(function () {
-                                var column = this;
-                                var select = $('<select><option value=""></option></select>')
-                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
-                                    .on('change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val ? '^' + val + '$' : '', true, false)
-                                            .draw();
-                                    });
-
-                                column.data().unique().sort().each(function (d, j) {
-                                    select.append('<option value="' + d + '">' + d + '</option>');
-                                });
-                            });
-                            this.api().columns(6).every(function () {
-                                var column = this;
-                                var select = $('<select><option value=""></option></select>')
-                                    .appendTo($("#example thead tr:eq(1) th").eq(column.index()).empty())
-                                    .on('change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val ? '^' + val + '$' : '', true, false)
-                                            .draw();
-                                    });
-
-                                column.data().unique().sort().each(function (d, j) {
-                                    select.append('<option value="' + d + '">' + d + '</option>');
-                                });
-                            });
-                        },
+                  {"data": 'type'},
+                  {"data": 'Classification'},
+                  {
+                      "data": 'Uniprot_entry',
+                      "orderable": false,
+                      "render": function (data, type, row) {
+                          return '<a href="http://www.uniprot.org/uniprot/' + data + '" style="text-decoration: none;">' + data + '</a>';
+                      }
 
 
+                  }
+              ],
+              "order": [[1, 'asc']]
+          });
+          $("button[type=button]").click(function () {
+              $("#tableWrapper").show();
+              var keywordsToSearch=$("input[type=text]").val();
+              table.search(keywordsToSearch).draw();
+              $("#typeSelect").on('change',function () {
+                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                  table.column(5).search( val ? '^'+val+'$' : '', true, false ).draw();
+              });
+              $("#organismSelect").on('change',function () {
+                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                  table.column(2).search( val ? '^'+val+'$' : '', true, false ).draw();
+              });
+              $("#classificationSelect").on('change',function () {
+                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                  table.column(6).search( val ? '^'+val+'$' : '', true, false ).draw();
+              });
+          })
+          $('#example tbody').on('click', 'td.details-control', function () {
+              var tr = $(this).closest('tr');
+              var row = table.row( tr );
 
+              if ( row.child.isShown() ) {
+                  // This row is already open - close it
+                  row.child.hide();
+                  tr.removeClass('shown');
+              }
+              else {
+                  // Open this row
+                  row.child( format(row.data()) ).show();
+                  tr.addClass('shown');
+              }
+          } );
 
-                    "ajax": "data/allNAdata.txt",
-                    "columns": [
-                        {
-                            "className":      'details-control',
-                            "orderable":      false,
-                            "data":           null,
-                            "defaultContent": '',
-                        },
-                        {
-                            "data": 'PDB ID',
-                            "render": function (data, type, row) {
-                                return '<a href=" https://www.rcsb.org/structure/' + data + '" style="text-decoration: none;">' + data + '</a>';
-                            },
-                        },
-                        { "data": 'Source'},
-                        { "data": 'Protein chain ID', "orderable": false},
+      });
 
-                        { "data": 'NA chain ID', "orderable": false},
-
-                        { "data": 'type' },
-                        { "data": 'Classification'},
-                        { "data": 'Uniprot_entry',
-                            "orderable": false,
-                            "render": function ( data, type, row ) {
-                                return '<a href="http://www.uniprot.org/uniprot/'+ data+'" style="text-decoration: none;">'+data+'</a>';
-                            }
-
-
-                        }
-                    ],
-                    "order": [[1, 'asc']]
-                } );
-                  // Add event listener for opening and closing details
-                $('#example tbody').on('click', 'td.details-control', function () {
-                    var tr = $(this).closest('tr');
-                    var row = table.row( tr );
-
-                    if ( row.child.isShown() ) {
-                        // This row is already open - close it
-                        row.child.hide();
-                        tr.removeClass('shown');
-                    }
-                    else {
-                        // Open this row
-                        row.child( format(row.data()) ).show();
-                        tr.addClass('shown');
-                    }
-                } );
-            } );
-
-
-
-        </script>
+  </script>
 </head>
 
-  <body>
+<body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">NABP Database</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav m-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Tutorial.html">Tutorial</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="Search.html">Search</a>
-                        <span class="sr-only">(current)</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Browse.html">Browse</a>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">NABP Database</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav m-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Tutorial.html">Tutorial</a>
+        </li>
+        <li class="nav-item  active">
+          <a class="nav-link" href="Search.html">Search</a>
+          <span class="sr-only">(current)</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Browse.html">Browse</a>
 
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Download.html">Download</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Statistics.html">Statistics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Contact.html">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container-fluid"  style="padding-top:3em;padding-bottom: 3em;margin:0 auto">
-        <table id="example" class="display"  style="width:80%" >
-            <thead>
-            <tr>
-                <th></th>
-                <th>PDB ID</th>
-                <th>Organism</th>
-                <th>Protein chain ID</th>
-                <th>NA chain ID</th>
-                <th>type</th>
-                <th>Classification</th>
-                <th>Uniprot entry</th>
-            </tr>
-
-            <tr>
-                <th></th>
-                <th > </th>
-                <th >Organism</th>
-                <th > </th>
-                <th > </th>
-                <th>type</th>
-                <th >Classification</th>
-                <th > </th>
-            </tr>
-
-            </thead>
-            <tfoot>
-            <tr>
-                <th ></th>
-                <th >PDB ID</th>
-                <th>Organism</th>
-                <th >Protein chain ID</th>
-                <th >NA chain ID</th>
-                <th>type</th>
-                <th>Classification</th>
-                <th>Uniprot entry</th>
-            </tr>
-            </tfoot>
-        </table>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Download.html">Download</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Statistics.html">Statistics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Contact.html">Contact</a>
+        </li>
+      </ul>
     </div>
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright © Tianjin University Institude of Computational Biology 2018</p>
-      </div>
-      <!-- /.container -->
-    </footer>
+  </div>
+</nav>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
-  </body>
+<!-- Page Content -->
+<div class="container"  style="padding-top:3em;padding-bottom: 3em;margin:0 auto">
+  <div class="card border-light">
+    <h5 class="card-header">Keywords Search</h5>
+    <div class="card-body">
+      <div class="input-group mb-3">
+        <input type="text" id="keywords" class="form-control search-query" placeholder="Search by PDB ID,Uniprot entry,mmCIF keywords,organism etc" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" onclick='document.getElementById("keywords").value=""'><i class="fa fa-search"></i>Clear</button>
+          <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i>Search</button>
+        </div>
+      </div>
+      <div>
+        <strong><em>e.g.</em></strong>
+        <a onclick='document.getElementById("keywords").value="10MH"' href="javascript:void(0)">
+                     <span>
+                         10MH
+                     </span>
+        </a>,
+        <a onclick='document.getElementById("keywords").value="P05102"' href="javascript:void(0)">
+                     <span>
+                         P05102
+                     </span>
+        </a>,
+        <a onclick='document.getElementById("keywords").value="Homo sapiens"' href="javascript:void(0)">
+                     <span>
+                         Homo sapiens
+                     </span>
+        </a>,
+        <a onclick='document.getElementById("keywords").value="Carbohydrate binding protein/DNA"' href="javascript:void(0)">
+                     <span>
+                     Carbohydrate binding protein/DNA
+                     </span>
+        </a>
+        <a><i class="far fa-question-circle"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-light">
+    <h5 class="card-header">Advanced Filter</h5>
+    <div class="card-body">
+      <div class="input-group mb-3 col-lg-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text">Interaction type</label>
+        </div>
+        <select class="custom-select" id="typeSelect">
+          <option selected value="">All</option>
+          <option value="Protein-DNA">Protein-DNA interaction</option>
+          <option value="Protein-RNA">Protein-RNA interaction</option>
+        </select>
+      </div>
+      <div class="input-group mb-3 col-lg-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text">Organism</label>
+        </div>
+        <select class="custom-select" id="organismSelect">
+          <option selected value="">All</option>
+          <option value="[Bacillus] caldolyticus">[Bacillus] caldolyticus</option>
+          <option value="[Bacillus] caldotenax">[Bacillus] caldotenax</option>
+          <option value="[Candida] glabrata">[Candida] glabrata</option>
+          <option value="[Eubacterium] rectale">[Eubacterium] rectale</option>
+          <option value="Acanthamoeba polyphaga mimivirus">Acanthamoeba polyphaga mimivirus</option>
+          <option value="Acidaminococcus sp. BV3L6">Acidaminococcus sp. BV3L6</option>
+          <option value="Acidianus filamentous virus 1">Acidianus filamentous virus 1</option>
+          <option value="Acinetobacter baumannii">Acinetobacter baumannii</option>
+          <option value="Acinetobacter sp. ADP1">Acinetobacter sp. ADP1</option>
+          <option value="Adeno-associated dependoparvovirus A">Adeno-associated dependoparvovirus A</option>
+          <option value="Adeno-associated dependoparvovirus B">Adeno-associated dependoparvovirus B</option>
+          <option value="Aeropyrum pernix">Aeropyrum pernix</option>
+          <option value="African swine fever virus">African swine fever virus</option>
+          <option value="Agrobacterium fabrum">Agrobacterium fabrum</option>
+          <option value="Agrobacterium tumefaciens">Agrobacterium tumefaciens</option>
+          <option value="Alfalfa mosaic virus">Alfalfa mosaic virus</option>
+          <option value="Alicyclobacillus acidoterrestris">Alicyclobacillus acidoterrestris</option>
+          <option value="Alphapapillomavirus 10">Alphapapillomavirus 10</option>
+          <option value="Alphapapillomavirus 7">Alphapapillomavirus 7</option>
+          <option value="Anabaena sp.">Anabaena sp.</option>
+          <option value="Anas platyrhynchos">Anas platyrhynchos</option>
+          <option value="Anopheles gambiae">Anopheles gambiae</option>
+          <option value="Aquifex aeolicus">Aquifex aeolicus</option>
+          <option value="Arabidopsis thaliana">Arabidopsis thaliana</option>
+          <option value="Archaeoglobus fulgidus">Archaeoglobus fulgidus</option>
+          <option value="Aspergillus nidulans">Aspergillus nidulans</option>
+          <option value="Aspergillus oryzae">Aspergillus oryzae</option>
+          <option value="Aspergillus restrictus">Aspergillus restrictus</option>
+          <option value="Avian myeloblastosis virus">Avian myeloblastosis virus</option>
+          <option value="Avian sarcoma virus">Avian sarcoma virus</option>
+          <option value="Bacillus amyloliquefaciens">Bacillus amyloliquefaciens</option>
+          <option value="Bacillus anthracis">Bacillus anthracis</option>
+          <option value="Bacillus cereus">Bacillus cereus</option>
+          <option value="Bacillus firmus">Bacillus firmus</option>
+          <option value="Bacillus halodurans">Bacillus halodurans</option>
+          <option value="Bacillus licheniformis">Bacillus licheniformis</option>
+          <option value="Bacillus megaterium">Bacillus megaterium</option>
+          <option value="Bacillus pumilus">Bacillus pumilus</option>
+          <option value="Bacillus subtilis">Bacillus subtilis</option>
+          <option value="Bacillus thermoamylovorans">Bacillus thermoamylovorans</option>
+          <option value="Bacillus thuringiensis">Bacillus thuringiensis</option>
+          <option value="Bacillus virus phi29">Bacillus virus phi29</option>
+          <option value="Bacillus virus SPO1">Bacillus virus SPO1</option>
+          <option value="Bacteroides fragilis">Bacteroides fragilis</option>
+          <option value="Bacteroides sp. 3_1_23">Bacteroides sp. 3_1_23</option>
+          <option value="Bacteroides thetaiotaomicron">Bacteroides thetaiotaomicron</option>
+          <option value="Bamboo mosaic virus">Bamboo mosaic virus</option>
+          <option value="Barley stripe mosaic virus">Barley stripe mosaic virus</option>
+          <option value="Beak and feather disease virus">Beak and feather disease virus</option>
+          <option value="Bean pod mottle virus">Bean pod mottle virus</option>
+          <option value="Black beetle virus">Black beetle virus</option>
+          <option value="Bombyx mori">Bombyx mori</option>
+          <option value="Borreliella burgdorferi">Borreliella burgdorferi</option>
+          <option value="Bos taurus">Bos taurus</option>
+          <option value="Bovine immunodeficiency virus">Bovine immunodeficiency virus</option>
+          <option value="Bovine papillomavirus">Bovine papillomavirus</option>
+          <option value="Bovine viral diarrhea virus 1">Bovine viral diarrhea virus 1</option>
+          <option value="Brachypodium distachyon">Brachypodium distachyon</option>
+          <option value="Bradyrhizobium japonicum">Bradyrhizobium japonicum</option>
+          <option value="Brevibacillus centrosporus">Brevibacillus centrosporus</option>
+          <option value="Bunyamwera orthobunyavirus">Bunyamwera orthobunyavirus</option>
+          <option value="Caenorhabditis elegans">Caenorhabditis elegans</option>
+          <option value="Caldanaerobacter subterraneus">Caldanaerobacter subterraneus</option>
+          <option value="California encephalitis orthobunyavirus">California encephalitis orthobunyavirus</option>
+          <option value="Campylobacter jejuni">Campylobacter jejuni</option>
+          <option value="Canavalia lineata">Canavalia lineata</option>
+          <option value="Candida albicans">Candida albicans</option>
+          <option value="Canis lupus">Canis lupus</option>
+          <option value="Canis sp.">Canis sp.</option>
+          <option value="Carassius auratus">Carassius auratus</option>
+          <option value="Carnation Italian ringspot virus">Carnation Italian ringspot virus</option>
+          <option value="Carnivore protoparvovirus 1">Carnivore protoparvovirus 1</option>
+          <option value="Caulobacter vibrioides">Caulobacter vibrioides</option>
+          <option value="Chaetomium thermophilum">Chaetomium thermophilum</option>
+          <option value="Chikungunya virus">Chikungunya virus</option>
+          <option value="Chlamydomonas moewusii">Chlamydomonas moewusii</option>
+          <option value="Chlamydomonas reinhardtii">Chlamydomonas reinhardtii</option>
+          <option value="Chlorella vulgaris">Chlorella vulgaris</option>
+          <option value="Citrobacter sp. RFL231">Citrobacter sp. RFL231</option>
+          <option value="Clostridium acetobutylicum">Clostridium acetobutylicum</option>
+          <option value="Corynebacterium diphtheriae">Corynebacterium diphtheriae</option>
+          <option value="Corynebacterium glutamicum">Corynebacterium glutamicum</option>
+          <option value="Cowpea chlorotic mottle virus">Cowpea chlorotic mottle virus</option>
+          <option value="Cronobacter sakazakii">Cronobacter sakazakii</option>
+          <option value="Cryphonectria parasitica">Cryphonectria parasitica</option>
+          <option value="Cucumber green mottle mosaic virus">Cucumber green mottle mosaic virus</option>
+          <option value="Cupriavidus necator">Cupriavidus necator</option>
+          <option value="Cypovirus 1">Cypovirus 1</option>
+          <option value="Cyprinid herpesvirus 3">Cyprinid herpesvirus 3</option>
+          <option value="Danio rerio">Danio rerio</option>
+          <option value="Deinococcus radiodurans">Deinococcus radiodurans</option>
+          <option value="Deltapapillomavirus 4">Deltapapillomavirus 4</option>
+          <option value="Dengue virus">Dengue virus</option>
+          <option value="Desmodium yellow mottle virus">Desmodium yellow mottle virus</option>
+          <option value="Desulfitobacterium hafniense">Desulfitobacterium hafniense</option>
+          <option value="Desulfurococcus mucosus">Desulfurococcus mucosus</option>
+          <option value="Desulfurococcus mucosus,Chlamydomonas reinhardtii">Desulfurococcus mucosus,Chlamydomonas reinhardtii</option>
+          <option value="Dictyostelium discoideum">Dictyostelium discoideum</option>
+          <option value="Drosophila mauritiana">Drosophila mauritiana</option>
+          <option value="Drosophila melanogaster">Drosophila melanogaster</option>
+          <option value="Drosophila subobscura">Drosophila subobscura</option>
+          <option value="Ebola virus sp.">Ebola virus sp.</option>
+          <option value="Encephalitozoon cuniculi">Encephalitozoon cuniculi</option>
+          <option value="Entamoeba histolytica">Entamoeba histolytica</option>
+          <option value="Enterobacter cloacae">Enterobacter cloacae</option>
+          <option value="Enterobacter phage Enc34">Enterobacter phage Enc34</option>
+          <option value="Enterobacter sp. RFL1396">Enterobacter sp. RFL1396</option>
+          <option value="Enterobacteria phage phi21">Enterobacteria phage phi21</option>
+          <option value="Enterococcus faecalis">Enterococcus faecalis</option>
+          <option value="Enterovirus A">Enterovirus A</option>
+          <option value="Enterovirus B">Enterovirus B</option>
+          <option value="Enterovirus C">Enterovirus C</option>
+          <option value="Equine arteritis virus">Equine arteritis virus</option>
+          <option value="Equine infectious anemia virus">Equine infectious anemia virus</option>
+          <option value="Equus caballus">Equus caballus</option>
+          <option value="Eremothecium gossypii">Eremothecium gossypii</option>
+          <option value="Escherichia coli">Escherichia coli</option>
+          <option value="Escherichia coli,Escherichia virus Qbeta">Escherichia coli,Escherichia virus Qbeta</option>
+          <option value="Escherichia coli,Homo sapiens">Escherichia coli,Homo sapiens</option>
+          <option value="Escherichia coli,synthetic construct,Escherichia virus Qbeta">Escherichia coli,synthetic construct,Escherichia virus Qbeta</option>
+          <option value="Escherichia virus alpha3">Escherichia virus alpha3</option>
+          <option value="Escherichia virus HK022">Escherichia virus HK022</option>
+          <option value="Escherichia virus Lambda">Escherichia virus Lambda</option>
+          <option value="Escherichia virus MS2">Escherichia virus MS2</option>
+          <option value="Escherichia virus Mu">Escherichia virus Mu</option>
+          <option value="Escherichia virus N15">Escherichia virus N15</option>
+          <option value="Escherichia virus N4">Escherichia virus N4</option>
+          <option value="Escherichia virus P1">Escherichia virus P1</option>
+          <option value="Escherichia virus phiX174">Escherichia virus phiX174</option>
+          <option value="Escherichia virus Qbeta">Escherichia virus Qbeta</option>
+          <option value="Escherichia virus RB69">Escherichia virus RB69</option>
+          <option value="Escherichia virus T4">Escherichia virus T4</option>
+          <option value="Escherichia virus T5">Escherichia virus T5</option>
+          <option value="Escherichia virus T7">Escherichia virus T7</option>
+          <option value="Expression vector pET3-H2A">Expression vector pET3-H2A</option>
+          <option value="Fischerella thermalis">Fischerella thermalis</option>
+          <option value="Flock House virus">Flock House virus</option>
+          <option value="Foot-and-mouth disease virus">Foot-and-mouth disease virus</option>
+          <option value="Francisella tularensis">Francisella tularensis</option>
+          <option value="Fusarium graminearum">Fusarium graminearum</option>
+          <option value="Fusobacterium nucleatum">Fusobacterium nucleatum</option>
+          <option value="Gallus gallus">Gallus gallus</option>
+          <option value="Geobacillus">Geobacillus</option>
+          <option value="Geobacillus kaustophilus">Geobacillus kaustophilus</option>
+          <option value="Geobacillus stearothermophilus">Geobacillus stearothermophilus</option>
+          <option value="Gremmeniella abietina">Gremmeniella abietina</option>
+          <option value="Grosmannia penicillata">Grosmannia penicillata</option>
+          <option value="Haemophilus aegyptius">Haemophilus aegyptius</option>
+          <option value="Haemophilus haemolyticus">Haemophilus haemolyticus</option>
+          <option value="Haemophilus influenzae">Haemophilus influenzae</option>
+          <option value="Haemophilus parahaemolyticus">Haemophilus parahaemolyticus</option>
+          <option value="Haloarcula marismortui">Haloarcula marismortui</option>
+          <option value="Helicobacter pylori">Helicobacter pylori</option>
+          <option value="Heliothis virescens">Heliothis virescens</option>
+          <option value="Hepacivirus C">Hepacivirus C</option>
+          <option value="Hibiscus latent Singapore virus">Hibiscus latent Singapore virus</option>
+          <option value="Homo sapiens">Homo sapiens</option>
+          <option value="Homo sapiens,Rattus rattus">Homo sapiens,Rattus rattus</option>
+          <option value="Homo sapiens,Sus scrofa">Homo sapiens,Sus scrofa</option>
+          <option value="Human alphaherpesvirus 1">Human alphaherpesvirus 1</option>
+          <option value="Human gammaherpesvirus 4">Human gammaherpesvirus 4</option>
+          <option value="Human gammaherpesvirus 8">Human gammaherpesvirus 8</option>
+          <option value="Human immunodeficiency virus 1">Human immunodeficiency virus 1</option>
+          <option value="Human metapneumovirus">Human metapneumovirus</option>
+          <option value="Human orthopneumovirus">Human orthopneumovirus</option>
+          <option value="Human polyomavirus 5">Human polyomavirus 5</option>
+          <option value="Indiana vesiculovirus">Indiana vesiculovirus</option>
+          <option value="Influenza A virus">Influenza A virus</option>
+          <option value="Influenza B virus">Influenza B virus</option>
+          <option value="Jembrana disease virus">Jembrana disease virus</option>
+          <option value="Klebsiella phage phiKO2">Klebsiella phage phiKO2</option>
+          <option value="Klebsiella pneumoniae">Klebsiella pneumoniae</option>
+          <option value="Kluyveromyces lactis">Kluyveromyces lactis</option>
+          <option value="Kocuria varians">Kocuria varians</option>
+          <option value="Komagataella phaffii">Komagataella phaffii</option>
+          <option value="Lachancea kluyveri">Lachancea kluyveri</option>
+          <option value="Lachnospiraceae bacterium">Lachnospiraceae bacterium</option>
+          <option value="Lachnospiraceae bacterium ND2006">Lachnospiraceae bacterium ND2006</option>
+          <option value="Lachnospiraceae bacterium NK4A179">Lachnospiraceae bacterium NK4A179</option>
+          <option value="Lactococcus lactis">Lactococcus lactis</option>
+          <option value="Lactococcus phage TP901-1">Lactococcus phage TP901-1</option>
+          <option value="Laribacter hongkongensis">Laribacter hongkongensis</option>
+          <option value="Lassa mammarenavirus">Lassa mammarenavirus</option>
+          <option value="Leanyer virus">Leanyer virus</option>
+          <option value="Lechevalieria aerocolonigenes">Lechevalieria aerocolonigenes</option>
+          <option value="Leishmania donovani">Leishmania donovani</option>
+          <option value="Leishmania infantum">Leishmania infantum</option>
+          <option value="Leptographium truncatum">Leptographium truncatum</option>
+          <option value="Leptotrichia buccalis">Leptotrichia buccalis</option>
+          <option value="Leptotrichia shahii">Leptotrichia shahii</option>
+          <option value="Listeria innocua">Listeria innocua</option>
+          <option value="Listeria monocytogenes">Listeria monocytogenes</option>
+          <option value="Macaca mulatta">Macaca mulatta</option>
+          <option value="Macaca mulatta polyomavirus 1">Macaca mulatta polyomavirus 1</option>
+          <option value="Macaca nemestrina">Macaca nemestrina</option>
+          <option value="Magnaporthe oryzae">Magnaporthe oryzae</option>
+          <option value="Magnetospirillum gryphiswaldense">Magnetospirillum gryphiswaldense</option>
+          <option value="Mammalian orthoreovirus">Mammalian orthoreovirus</option>
+          <option value="Mammalian rubulavirus 5">Mammalian rubulavirus 5</option>
+          <option value="Marburg marburgvirus">Marburg marburgvirus</option>
+          <option value="Marinitoga piezophila">Marinitoga piezophila</option>
+          <option value="Measles morbillivirus">Measles morbillivirus</option>
+          <option value="Mesocricetus auratus">Mesocricetus auratus</option>
+          <option value="Methanocaldococcus jannaschii">Methanocaldococcus jannaschii</option>
+          <option value="Methanococcus maripaludis">Methanococcus maripaludis</option>
+          <option value="Methanolobus psychrophilus">Methanolobus psychrophilus</option>
+          <option value="Methanopyrus kandleri">Methanopyrus kandleri</option>
+          <option value="Methanosarcina acetivorans">Methanosarcina acetivorans</option>
+          <option value="Methanosarcina mazei">Methanosarcina mazei</option>
+          <option value="Methanosarcina thermophila">Methanosarcina thermophila</option>
+          <option value="Methanothermobacter thermautotrophicus">Methanothermobacter thermautotrophicus</option>
+          <option value="Methanothermus fervidus">Methanothermus fervidus</option>
+          <option value="Methylophilus methylotrophus">Methylophilus methylotrophus</option>
+          <option value="Micromonospora echinospora">Micromonospora echinospora</option>
+          <option value="Monomastix sp. OKE-1">Monomastix sp. OKE-1</option>
+          <option value="Moorella thermoacetica">Moorella thermoacetica</option>
+          <option value="Mopeia Lassa virus reassortant 29">Mopeia Lassa virus reassortant 29</option>
+          <option value="Moraxella sp.">Moraxella sp.</option>
+          <option value="Mouse mammary tumor virus">Mouse mammary tumor virus</option>
+          <option value="Murine leukemia virus">Murine leukemia virus</option>
+          <option value="Murine leukemia-related retroviruses">Murine leukemia-related retroviruses</option>
+          <option value="Mus musculus">Mus musculus</option>
+          <option value="Mus musculus polyomavirus 1">Mus musculus polyomavirus 1</option>
+          <option value="Musca domestica">Musca domestica</option>
+          <option value="Mycobacterium smegmatis">Mycobacterium smegmatis</option>
+          <option value="Mycobacterium sp. JLS">Mycobacterium sp. JLS</option>
+          <option value="Mycobacterium tuberculosis">Mycobacterium tuberculosis</option>
+          <option value="Mycoplasma">Mycoplasma</option>
+          <option value="Mycoplasma penetrans">Mycoplasma penetrans</option>
+          <option value="Myxococcus xanthus">Myxococcus xanthus</option>
+          <option value="Naegleria gruberi">Naegleria gruberi</option>
+          <option value="Nanoarchaeum equitans">Nanoarchaeum equitans</option>
+          <option value="Neisseria gonorrhoeae">Neisseria gonorrhoeae</option>
+          <option value="Neisseria meningitidis">Neisseria meningitidis</option>
+          <option value="Neurospora crassa">Neurospora crassa</option>
+          <option value="Nicotiana glutinosa">Nicotiana glutinosa</option>
+          <option value="Nocardia otitidiscaviarum">Nocardia otitidiscaviarum</option>
+          <option value="Norovirus">Norovirus</option>
+          <option value="Norwalk virus">Norwalk virus</option>
+          <option value="Nostoc sp. PCC 7120">Nostoc sp. PCC 7120</option>
+          <option value="Oceanobacter kriegii">Oceanobacter kriegii</option>
+          <option value="Ophiostoma novo-ulmi">Ophiostoma novo-ulmi</option>
+          <option value="Orthopteran ambidensovirus 1">Orthopteran ambidensovirus 1</option>
+          <option value="Oryctolagus cuniculus">Oryctolagus cuniculus</option>
+          <option value="Oryza sativa">Oryza sativa</option>
+          <option value="Oryzias latipes">Oryzias latipes</option>
+          <option value="Paraburkholderia rhizoxinica">Paraburkholderia rhizoxinica</option>
+          <option value="Paramecium bursaria Chlorella virus 1">Paramecium bursaria Chlorella virus 1</option>
+          <option value="Parechovirus A">Parechovirus A</option>
+          <option value="Pariacoto virus">Pariacoto virus</option>
+          <option value="Pectobacterium atrosepticum">Pectobacterium atrosepticum</option>
+          <option value="Pepino mosaic virus">Pepino mosaic virus</option>
+          <option value="Physalis mottle virus">Physalis mottle virus</option>
+          <option value="Physarum polycephalum">Physarum polycephalum</option>
+          <option value="Physcomitrella patens">Physcomitrella patens</option>
+          <option value="Planomicrobium okeanokoites">Planomicrobium okeanokoites</option>
+          <option value="Plasmid RSF1010">Plasmid RSF1010</option>
+          <option value="Plasmodium falciparum">Plasmodium falciparum</option>
+          <option value="Plasmodium vivax">Plasmodium vivax</option>
+          <option value="Podospora anserina">Podospora anserina</option>
+          <option value="Primate T-lymphotropic virus 1">Primate T-lymphotropic virus 1</option>
+          <option value="Proteus vulgaris">Proteus vulgaris</option>
+          <option value="Providence virus">Providence virus</option>
+          <option value="Pseudomonas aeruginosa">Pseudomonas aeruginosa</option>
+          <option value="Pseudomonas alcaligenes">Pseudomonas alcaligenes</option>
+          <option value="Pseudomonas fluorescens">Pseudomonas fluorescens</option>
+          <option value="Pseudomonas phage JBD30">Pseudomonas phage JBD30</option>
+          <option value="Pseudomonas phage PP7">Pseudomonas phage PP7</option>
+          <option value="Pseudomonas phage PRR1">Pseudomonas phage PRR1</option>
+          <option value="Pseudomonas protegens">Pseudomonas protegens</option>
+          <option value="Pseudomonas putida">Pseudomonas putida</option>
+          <option value="Pseudomonas virus Pf1">Pseudomonas virus Pf1</option>
+          <option value="Pseudomonas virus phi6">Pseudomonas virus phi6</option>
+          <option value="Pyrococcus abyssi">Pyrococcus abyssi</option>
+          <option value="Pyrococcus furiosus">Pyrococcus furiosus</option>
+          <option value="Pyrococcus horikoshii">Pyrococcus horikoshii</option>
+          <option value="Pyrococcus sp. GI-H">Pyrococcus sp. GI-H</option>
+          <option value="Pyrococcus woesei">Pyrococcus woesei</option>
+          <option value="Rabies lyssavirus">Rabies lyssavirus</option>
+          <option value="Rana catesbeiana">Rana catesbeiana</option>
+          <option value="Rana pipiens">Rana pipiens</option>
+          <option value="Rattus norvegicus">Rattus norvegicus</option>
+          <option value="Reovirus sp.">Reovirus sp.</option>
+          <option value="Reston ebolavirus">Reston ebolavirus</option>
+          <option value="Rhinovirus A">Rhinovirus A</option>
+          <option value="Rhodobacter sphaeroides">Rhodobacter sphaeroides</option>
+          <option value="Ribgrass mosaic virus">Ribgrass mosaic virus</option>
+          <option value="Rice dwarf virus">Rice dwarf virus</option>
+          <option value="Ricinus communis">Ricinus communis</option>
+          <option value="Rickettsia felis">Rickettsia felis</option>
+          <option value="Rift Valley fever phlebovirus">Rift Valley fever phlebovirus</option>
+          <option value="Rodent protoparvovirus 1">Rodent protoparvovirus 1</option>
+          <option value="Rotavirus A">Rotavirus A</option>
+          <option value="Rous sarcoma virus">Rous sarcoma virus</option>
+          <option value="Ruminiclostridium thermocellum">Ruminiclostridium thermocellum</option>
+          <option value="Saccharomyces cerevisiae">Saccharomyces cerevisiae</option>
+          <option value="Saccharomyces cerevisiae,Mus musculus">Saccharomyces cerevisiae,Mus musculus</option>
+          <option value="Salmonella enterica">Salmonella enterica</option>
+          <option value="Salmonella virus P22">Salmonella virus P22</option>
+          <option value="Sandfly fever Naples phlebovirus">Sandfly fever Naples phlebovirus</option>
+          <option value="Sathuperi orthobunyavirus">Sathuperi orthobunyavirus</option>
+          <option value="Schizosaccharomyces pombe">Schizosaccharomyces pombe</option>
+          <option value="Shewanella oneidensis">Shewanella oneidensis</option>
+          <option value="Shewanella putrefaciens">Shewanella putrefaciens</option>
+          <option value="Shigella flexneri">Shigella flexneri</option>
+          <option value="Simian foamy virus">Simian foamy virus</option>
+          <option value="Sinorhizobium fredii">Sinorhizobium fredii</option>
+          <option value="Solanum tuberosum">Solanum tuberosum</option>
+          <option value="Sordaria macrospora">Sordaria macrospora</option>
+          <option value="Spinacia oleracea">Spinacia oleracea</option>
+          <option value="Staphylococcus aureus">Staphylococcus aureus</option>
+          <option value="Staphylococcus epidermidis">Staphylococcus epidermidis</option>
+          <option value="Staphylococcus warneri">Staphylococcus warneri</option>
+          <option value="Sterkiella nova">Sterkiella nova</option>
+          <option value="Streptococcus agalactiae">Streptococcus agalactiae</option>
+          <option value="Streptococcus pneumoniae">Streptococcus pneumoniae</option>
+          <option value="Streptococcus pyogenes">Streptococcus pyogenes</option>
+          <option value="Streptococcus sanguinis">Streptococcus sanguinis</option>
+          <option value="Streptococcus sp. 'group G',Homo sapiens">Streptococcus sp. 'group G',Homo sapiens</option>
+          <option value="Streptococcus thermophilus">Streptococcus thermophilus</option>
+          <option value="Streptomyces">Streptomyces</option>
+          <option value="Streptomyces actuosus">Streptomyces actuosus</option>
+          <option value="Streptomyces antibioticus">Streptomyces antibioticus</option>
+          <option value="Streptomyces azureus">Streptomyces azureus</option>
+          <option value="Streptomyces coelicolor">Streptomyces coelicolor</option>
+          <option value="Streptomyces echinatus">Streptomyces echinatus</option>
+          <option value="Streptomyces fimbriatus">Streptomyces fimbriatus</option>
+          <option value="Streptomyces graminofaciens">Streptomyces graminofaciens</option>
+          <option value="Streptomyces griseus">Streptomyces griseus</option>
+          <option value="Streptomyces lividans">Streptomyces lividans</option>
+          <option value="Streptomyces sp.">Streptomyces sp.</option>
+          <option value="Streptomyces venezuelae">Streptomyces venezuelae</option>
+          <option value="Streptomyces virginiae">Streptomyces virginiae</option>
+          <option value="Sulfolobus acidocaldarius">Sulfolobus acidocaldarius</option>
+          <option value="Sulfolobus acidocaldarius,Sulfolobus solfataricus">Sulfolobus acidocaldarius,Sulfolobus solfataricus</option>
+          <option value="Sulfolobus islandicus rod-shaped virus 2">Sulfolobus islandicus rod-shaped virus 2</option>
+          <option value="Sulfolobus shibatae">Sulfolobus shibatae</option>
+          <option value="Sulfolobus solfataricus">Sulfolobus solfataricus</option>
+          <option value="Sulfolobus solfataricus,Human immunodeficiency virus 1">Sulfolobus solfataricus,Human immunodeficiency virus 1</option>
+          <option value="Sulfolobus sp. NOB8H2">Sulfolobus sp. NOB8H2</option>
+          <option value="Sulfolobus tokodaii">Sulfolobus tokodaii</option>
+          <option value="Sus scrofa">Sus scrofa</option>
+          <option value="Synechococcus elongatus">Synechococcus elongatus</option>
+          <option value="Synechocystis sp. PCC 6803">Synechocystis sp. PCC 6803</option>
+          <option value="synthetic construct">synthetic construct</option>
+          <option value="synthetic construct,Aquifex aeolicus">synthetic construct,Aquifex aeolicus</option>
+          <option value="Tanapox virus">Tanapox virus</option>
+          <option value="Tetrahymena thermophila">Tetrahymena thermophila</option>
+          <option value="Thalassobius gelatinovorus">Thalassobius gelatinovorus</option>
+          <option value="Thermoanaerobacter ethanolicus">Thermoanaerobacter ethanolicus</option>
+          <option value="Thermobifida fusca">Thermobifida fusca</option>
+          <option value="Thermococcus gorgonarius">Thermococcus gorgonarius</option>
+          <option value="Thermococcus kodakarensis">Thermococcus kodakarensis</option>
+          <option value="Thermococcus sp. 9oN-7">Thermococcus sp. 9oN-7</option>
+          <option value="Thermoplasma acidophilum">Thermoplasma acidophilum</option>
+          <option value="Thermotoga maritima">Thermotoga maritima</option>
+          <option value="Thermotoga maritima,synthetic construct">Thermotoga maritima,synthetic construct</option>
+          <option value="Thermovibrio ammonificans">Thermovibrio ammonificans</option>
+          <option value="Thermus aquaticus">Thermus aquaticus</option>
+          <option value="Thermus aquaticus,Sulfolobus solfataricus">Thermus aquaticus,Sulfolobus solfataricus</option>
+          <option value="Thermus thermophilus">Thermus thermophilus</option>
+          <option value="Tobacco albetovirus 1">Tobacco albetovirus 1</option>
+          <option value="Tobacco mild green mosaic virus">Tobacco mild green mosaic virus</option>
+          <option value="Tobacco mosaic virus">Tobacco mosaic virus</option>
+          <option value="Tobacco virtovirus 1">Tobacco virtovirus 1</option>
+          <option value="Tomato aspermy virus">Tomato aspermy virus</option>
+          <option value="Tomato bushy stunt virus">Tomato bushy stunt virus</option>
+          <option value="Tomato spotted wilt orthotospovirus">Tomato spotted wilt orthotospovirus</option>
+          <option value="Toxoplasma gondii">Toxoplasma gondii</option>
+          <option value="Tragopogon ruthenicus">Tragopogon ruthenicus</option>
+          <option value="Trichoderma reesei">Trichoderma reesei</option>
+          <option value="Trichomonas vaginalis">Trichomonas vaginalis</option>
+          <option value="Trichoplax adhaerens">Trichoplax adhaerens</option>
+          <option value="Triticum aestivum">Triticum aestivum</option>
+          <option value="Triticum sp.">Triticum sp.</option>
+          <option value="Trypanosoma brucei">Trypanosoma brucei</option>
+          <option value="Trypanosoma cruzi">Trypanosoma cruzi</option>
+          <option value="Turnip yellow mosaic virus">Turnip yellow mosaic virus</option>
+          <option value="uncultured organism">uncultured organism</option>
+          <option value="unidentified">unidentified</option>
+          <option value="Ustilago maydis">Ustilago maydis</option>
+          <option value="Vaccinia virus">Vaccinia virus</option>
+          <option value="Vanderwaltozyma polyspora">Vanderwaltozyma polyspora</option>
+          <option value="Variola virus">Variola virus</option>
+          <option value="Vibrio cholerae">Vibrio cholerae</option>
+          <option value="Vibrio vulnificus">Vibrio vulnificus</option>
+          <option value="Visna/maedi virus">Visna/maedi virus</option>
+          <option value="Vulcanisaeta distributa">Vulcanisaeta distributa</option>
+          <option value="Watermelon mosaic virus">Watermelon mosaic virus</option>
+          <option value="Weissella viridescens">Weissella viridescens</option>
+          <option value="Xanthomonas">Xanthomonas</option>
+          <option value="Xanthomonas campestris">Xanthomonas campestris</option>
+          <option value="Xanthomonas oryzae">Xanthomonas oryzae</option>
+          <option value="Xenopus laevis">Xenopus laevis</option>
+          <option value="Xenopus tropicalis">Xenopus tropicalis</option>
+          <option value="Yersinia pestis">Yersinia pestis</option>
+          <option value="Yersinia pseudotuberculosis">Yersinia pseudotuberculosis</option>
+          <option value="Zaire ebolavirus">Zaire ebolavirus</option>
+          <option value="Zea mays">Zea mays</option>
+          <option value="Zika virus">Zika virus</option>
+          <option value="Zygosaccharomyces rouxii">Zygosaccharomyces rouxii</option>
+          <option value="Zymomonas mobilis">Zymomonas mobilis</option>
+        </select>
+      </div>
+      <div class="input-group mb-3 col-lg-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text">Classification</label>
+        </div>
+        <select class="custom-select" id="classificationSelect">
+          <option selected value="">All</option>
+          <option value="(HYDROLASE,LYASE)/DNA">(hydrolase,lyase)/DNA</option>
+          <option value="3-METHYLADENINE DNA GLYCOSYLASE I/DNA">3-methyladenine DNA glycosylase i/DNA</option>
+          <option value="ALU RIBONUCLEOPROTEIN PARTICLE">alu ribonucleoprotein particle</option>
+          <option value="AMINOACYL-TRNA SYNTHETASE">aminoacyl-tRNA synthetase</option>
+          <option value="ANTITOXIN/TOXIN/DNA">antitoxin/toxin/DNA</option>
+          <option value="ANTITUMOR PROTEIN/DNA">antitumor protein/DNA</option>
+          <option value="ANTIVIRAL PROTEIN">antiviral protein</option>
+          <option value="APOPTOSIS/DNA">apoptosis/DNA</option>
+          <option value="BACTERIOPHAGE HK022">bacteriophage hk022</option>
+          <option value="BIOSYNTHETIC/structural protein/RNA">biosynthetic/structural protein/RNA</option>
+          <option value="BLOOD CLOTTING/BLOOD CLOTTING REGULATOR">blood clotting/blood clotting regulator</option>
+          <option value="Carbohydrate binding protein/DNA">carbohydrate binding protein/DNA</option>
+          <option value="CELL CYCLE">cell cycle</option>
+          <option value="CELL CYCLE/DNA">cell cycle/DNA</option>
+          <option value="cell cycle/RNA">cell cycle/RNA</option>
+          <option value="CHAPERONE/DNA">chaperone/DNA</option>
+          <option value="CHAPERONE/RNA">chaperone/RNA</option>
+          <option value="CHROMATIN BINDING PROTEIN / DNA">chromatin binding protein / DNA</option>
+          <option value="CHROMATIN BINDING PROTEIN/DNA">chromatin binding protein/DNA</option>
+          <option value="chromatin-binding protein/DNA">chromatin-binding protein/DNA</option>
+          <option value="COMPLEX (AMINOACYL-TRNA SYNTHASE/TRNA)">complex (aminoacyl-tRNA synthase/tRNA)</option>
+          <option value="COMPLEX (ELONGATION FACTOR/TRNA)">complex (elongation factor/tRNA)</option>
+          <option value="COMPLEX (LIGASE/TRNA)">complex (ligase/tRNA)</option>
+          <option value="COMPLEX (METHYLTRANSFERASE/TRNA)">complex (methyltransferase/tRNA)</option>
+          <option value="COMPLEX (TRANSCRIPTION ACTIVATOR/DNA)">complex (transcription activator/DNA)</option>
+          <option value="COMPLEX (TRANSCRIPTION FACTOR/DNA)">complex (transcription factor/DNA)</option>
+          <option value="CYTOKINE/DNA">cytokine/DNA</option>
+          <option value="de novo design/DNA">de novo design/DNA</option>
+          <option value="DE NOVO PROTEIN/DNA">de novo protein/DNA</option>
+          <option value="DE-NOVO PROTEIN/RNA">de-novo protein/RNA</option>
+          <option value="DNA">DNA</option>
+          <option value="DNA BINDING">DNA binding</option>
+          <option value="DNA BINDING PROTEIN">DNA binding protein</option>
+          <option value="DNA BINDING PROTEIN, DNA">DNA binding protein, DNA</option>
+          <option value="DNA BINDING PROTEIN, HYDROLASE/DNA">DNA binding protein, hydrolase/DNA</option>
+          <option value="DNA Binding Protein, RNA Binding Protein/DNA">DNA binding protein, RNA binding protein/DNA</option>
+          <option value="DNA BINDING PROTEIN, TRANSCRIPTION/DNA">DNA binding protein, transcription/DNA</option>
+          <option value="DNA BINDING PROTEIN/DNA">DNA binding protein/DNA</option>
+          <option value="DNA BINDING PROTEIN/DNA/RNA">DNA binding protein/DNA/RNA</option>
+          <option value="DNA BINDING PROTEIN/HYDROLASE/DNA">DNA binding protein/hydrolase/DNA</option>
+          <option value="DNA BINDING PROTEIN/RECOMBINATION/DNA">DNA binding protein/recombination/DNA</option>
+          <option value="DNA BINDING PROTEIN/RNA/DNA">DNA binding protein/RNA/DNA</option>
+          <option value="DNA BINDING PROTEN/DNA">DNA binding proten/DNA</option>
+          <option value="DNA LIGASE/DNA, TRANSFERASE">DNA ligase/DNA, transferase</option>
+          <option value="DNA RECOMBINATION/DNA">DNA recombination/DNA</option>
+          <option value="DNA REPAIR,OXIDOREDUCTASE/DNA">DNA repair,oxidoreductase/DNA</option>
+          <option value="DNA REPLICATION">DNA replication</option>
+          <option value="DNA, RNA BINDING PROTEIN/DNA">DNA, RNA binding protein/DNA</option>
+          <option value="DNA/ANTIBIOTIC">DNA/antibiotic</option>
+          <option value="DNA/DNA binding protein">DNA/DNA binding protein</option>
+          <option value="DNA/DNA-BINDING PROTEIN">DNA/DNA-binding protein</option>
+          <option value="DNA/LYASE/TRANSFERASE">DNA/lyase/transferase</option>
+          <option value="DNA/METAL BINDING PROTEIN">DNA/metal binding protein</option>
+          <option value="DNA/PEPTIDE">DNA/peptide</option>
+          <option value="DNA/REPLICATION">DNA/replication</option>
+          <option value="DNA/RNA BINDING PROTEIN">DNA/RNA binding protein</option>
+          <option value="DNA/STRUCTURAL PROTEIN">DNA/structural protein</option>
+          <option value="DNA/TRANSFERASE">DNA/transferase</option>
+          <option value="DNA-BINDING">DNA-binding</option>
+          <option value="DNA-BINDING PROTEIN/DNA">DNA-binding protein/DNA</option>
+          <option value="DNA-BINDING/REGULATORY PROTEIN">DNA-binding/regulatory protein</option>
+          <option value="ENDONUCLEASE">endonuclease</option>
+          <option value="GENE REGULATION">gene regulation</option>
+          <option value="GENE REGULATION, STRUCTURAL PROTEIN/DNA">gene regulation, structural protein/DNA</option>
+          <option value="GENE REGULATION/ANTITUMOR PROTEIN/DNA">gene regulation/antitumor protein/DNA</option>
+          <option value="GENE REGULATION/DNA">gene regulation/DNA</option>
+          <option value="GENE REGULATION/DNA COMPLEX">gene regulation/DNA complex</option>
+          <option value="GENE REGULATION/RNA">gene regulation/RNA</option>
+          <option value="GENE REGULATION/SIGNALLING PROTEIN/DNA">gene regulation/signalling protein/DNA</option>
+          <option value="HELICASE">helicase</option>
+          <option value="HORMONE/DNA">hormone/DNA</option>
+          <option value="HORMONE/GROWTH FACTOR RECEPTOR/DNA">hormone/growth factor receptor/DNA</option>
+          <option value="Hormone/Growth factor/DNA">hormone/growth factor/DNA</option>
+          <option value="HYDROLASE">hydrolase</option>
+          <option value="HYDROLASE / RNA / DNA">hydrolase / RNA / DNA</option>
+          <option value="HYDROLASE, LIGASE/DNA">hydrolase, ligase/DNA</option>
+          <option value="hydrolase, lyase/DNA">hydrolase, lyase/DNA</option>
+          <option value="Hydrolase, RNA BINDING PROTEIN/RNA">hydrolase, RNA binding protein/RNA</option>
+          <option value="HYDROLASE, TRANSFERASE/dna">hydrolase, transferase/DNA</option>
+          <option value="HYDROLASE,LYASE/DNA">hydrolase,lyase/DNA</option>
+          <option value="HYDROLASE,TRANSFERASE/DNA">hydrolase,transferase/DNA</option>
+          <option value="HYDROLASE/DNA">hydrolase/DNA</option>
+          <option value="HYDROLASE/DNA complex">hydrolase/DNA complex</option>
+          <option value="HYDROLASE/DNA/ANTIBIOTIC">hydrolase/DNA/antibiotic</option>
+          <option value="HYDROLASE/DNA/RNA">hydrolase/DNA/RNA</option>
+          <option value="HYDROLASE/DNA-RNA hybrid">hydrolase/DNA-RNA hybrid</option>
+          <option value="HYDROLASE/HYDROLASE INHIBITOR/DNA">hydrolase/hydrolase inhibitor/DNA</option>
+          <option value="Hydrolase/HYDROLASE INHIBITOR/RNA">hydrolase/hydrolase inhibitor/RNA</option>
+          <option value="hydrolase/hydrolase/RNA">hydrolase/hydrolase/RNA</option>
+          <option value="HYDROLASE/NUCLEAR PROTEIN">hydrolase/nuclear protein</option>
+          <option value="HYDROLASE/RNA">hydrolase/RNA</option>
+          <option value="hydrolase/RNA binding protein/RNA">hydrolase/RNA binding protein/RNA</option>
+          <option value="HYDROLASE/RNA/DNA">hydrolase/RNA/DNA</option>
+          <option value="HYDROLASE/TRANSFERASE/DNA">hydrolase/transferase/DNA</option>
+          <option value="HYDROLASE/TRANSFERASE/RNA">hydrolase/transferase/RNA</option>
+          <option value="Hydrolase-DNA complex">hydrolase-DNA complex</option>
+          <option value="IMMUNE SYSTEM">immune system</option>
+          <option value="immune system / RNA">immune system / RNA</option>
+          <option value="IMMUNE SYSTEM/DNA">immune system/DNA</option>
+          <option value="IMMUNE SYSTEM/DNA/RNA">immune system/DNA/RNA</option>
+          <option value="IMMUNE SYSTEM/INHIBITOR">immune system/inhibitor</option>
+          <option value="Immune System/RNA">immune system/RNA</option>
+          <option value="IMMUNE SYSTEM/RNA/DNA">immune system/RNA/DNA</option>
+          <option value="INTEGRASE/DNA">integrase/DNA</option>
+          <option value="ISOMERASE">isomerase</option>
+          <option value="ISOMERASE/BIOSYNTHETIC PROTEIN/RNA">isomerase/biosynthetic protein/RNA</option>
+          <option value="ISOMERASE/DNA">isomerase/DNA</option>
+          <option value="ISOMERASE/DNA/ANTIBIOTIC">isomerase/DNA/antibiotic</option>
+          <option value="ISOMERASE/DNA/INHIBITOR">isomerase/DNA/inhibitor</option>
+          <option value="ISOMERASE/DNA/ISOMERASE INHIBITOR">isomerase/DNA/isomerase inhibitor</option>
+          <option value="Isomerase/DNA/RNA">isomerase/DNA/RNA</option>
+          <option value="ISOMERASE/ISOMERASE Inhibitor/DNA">isomerase/isomerase inhibitor/DNA</option>
+          <option value="Isomerase/RNA">isomerase/RNA</option>
+          <option value="ISOMERASE/RNA BINDING PROTEIN/RNA">isomerase/RNA binding protein/RNA</option>
+          <option value="LIGASE">ligase</option>
+          <option value="ligase, lyase/DNA">ligase, lyase/DNA</option>
+          <option value="Ligase/DNA">ligase/DNA</option>
+          <option value="LIGASE/DNA/RNA">ligase/DNA/RNA</option>
+          <option value="LIGASE/DNA-BINDING PROTEIN/DNA">ligase/DNA-binding protein/DNA</option>
+          <option value="LIGASE/LIGASE INHIBITOR/DNA">ligase/ligase inhibitor/DNA</option>
+          <option value="LIGASE/RNA">ligase/RNA</option>
+          <option value="LIGASE/RNA/DNA">ligase/RNA/DNA</option>
+          <option value="LIGASE/tRNA">ligase/tRNA</option>
+          <option value="LYASE">lyase</option>
+          <option value="LYASE, TRANSFERASE/DNA">lyase, transferase/DNA</option>
+          <option value="Lyase,Transferase/DNA">lyase,transferase/DNA</option>
+          <option value="LYASE/DNA">lyase/DNA</option>
+          <option value="LYASE/RNA">lyase/RNA</option>
+          <option value="Membrane Protein/RNA">membrane protein/RNA</option>
+          <option value="METAL BINDING PROTEIN">metal binding protein</option>
+          <option value="METAL BINDING PROTEIN/DNA">metal binding protein/DNA</option>
+          <option value="METAL BINDING PROTEIN/RNA">metal binding protein/RNA</option>
+          <option value="metal-binding protein,Transcription/DNA">metal-binding protein,transcription/DNA</option>
+          <option value="NUCLEAR PROTEIN">nuclear protein</option>
+          <option value="NUCLEAR PROTEIN/DNA">nuclear protein/DNA</option>
+          <option value="NUCLEAR PROTEIN/RNA">nuclear protein/RNA</option>
+          <option value="NUCLEAR PROTEIN/TRANSCRIPTION/DNA">nuclear protein/transcription/DNA</option>
+          <option value="NUCLEAR RECEPTOR">nuclear receptor</option>
+          <option value="nucleic acid binding protein/dna">nucleic acid binding protein/DNA</option>
+          <option value="NUCLEIC ACID BINDING PROTEIN/DNA/RNA">nucleic acid binding protein/DNA/RNA</option>
+          <option value="NUCLEIC ACID BINDING PROTEIN/RNA">nucleic acid binding protein/RNA</option>
+          <option value="Nucleotide binding protein/RNA">nucleotide binding protein/RNA</option>
+          <option value="NUCLEOTIDYLTRANSFERASE">nucleotidyltransferase</option>
+          <option value="OXIDOREDUCTASE">oxidoreductase</option>
+          <option value="OXIDOREDUCTASE/DNA">oxidoreductase/DNA</option>
+          <option value="OXIDOREDUCTASE/RNA">oxidoreductase/RNA</option>
+          <option value="Oxidoreductase/Transcription/RNA">oxidoreductase/transcription/RNA</option>
+          <option value="POLYMERASE">polymerase</option>
+          <option value="Protein binding/DNA">protein binding/DNA</option>
+          <option value="PROTEIN BINDING/RNA">protein binding/RNA</option>
+          <option value="PROTEIN BINDING/VIRAL PROTEIN/DNA">protein binding/viral protein/DNA</option>
+          <option value="PROTEIN BINDING/VIRUS/DNA">protein binding/virus/DNA</option>
+          <option value="PROTEIN TRANSPORT">protein transport</option>
+          <option value="PROTEIN TRANSPORT/NUCLEAR PROTEIN/RNA">protein transport/nuclear protein/RNA</option>
+          <option value="protein transport/RNA">protein transport/RNA</option>
+          <option value="PROTEIN TRANSPORT/TRANSCRIPTION/DNA">protein transport/transcription/DNA</option>
+          <option value="PROTEIN/DNA">protein/DNA</option>
+          <option value="PROTEIN/DNA COMPLEX">protein/DNA complex</option>
+          <option value="PROTEIN/RNA">protein/RNA</option>
+          <option value="protein/RNA complex">protein/RNA complex</option>
+          <option value="PROTEIN-DNA COMPLEX">protein-DNA complex</option>
+          <option value="RECEPTOR/DNA">receptor/DNA</option>
+          <option value="RECOMBINATION">recombination</option>
+          <option value="RECOMBINATION, DNA">recombination, DNA</option>
+          <option value="RECOMBINATION,VIRAL PROTEIN/DNA">recombination,viral protein/DNA</option>
+          <option value="RECOMBINATION/DNA">recombination/DNA</option>
+          <option value="RECOMBINATION/INHIBITOR/DNA">recombination/inhibitor/DNA</option>
+          <option value="REPLICATION">replication</option>
+          <option value="REPLICATION ACTIVATOR/DNA">replication activator/DNA</option>
+          <option value="REPLICATION INHIBITOR/DNA">replication inhibitor/DNA</option>
+          <option value="REPLICATION, DNA BINDING PROTEIN/DNA">replication, DNA binding protein/DNA</option>
+          <option value="REPLICATION, TRANSFERASE/DNA">replication, transferase/DNA</option>
+          <option value="REPLICATION/DNA">replication/DNA</option>
+          <option value="Replication/DNA/RNA">replication/DNA/RNA</option>
+          <option value="RIBONUCLEOPROTEIN/RNA">ribonucleoprotein/RNA</option>
+          <option value="RIBOSOMAL PROTEIN">ribosomal protein</option>
+          <option value="RIBOSOMAL PROTEIN/RNA">ribosomal protein/RNA</option>
+          <option value="RIBOSOME">ribosome</option>
+          <option value="Ribosome/Antibiotic">ribosome/antibiotic</option>
+          <option value="RIBOSOME/HYDROLASE">ribosome/hydrolase</option>
+          <option value="RIBOSOME/INHIBITOR">ribosome/inhibitor</option>
+          <option value="RIBOSOME/PROTEIN TRANSPORT">ribosome/protein transport</option>
+          <option value="RIBOSOME/RIBOSOME INHIBITOR">ribosome/ribosome inhibitor</option>
+          <option value="RIBOSOME/RNA">ribosome/RNA</option>
+          <option value="RIBOSOME/TRANSLATION">ribosome/translation</option>
+          <option value="RNA">RNA</option>
+          <option value="RNA  BINDING PROTEIN/RNA">RNA  binding protein/RNA</option>
+          <option value="RNA AND DNA BINDING PROTEIN/DNA">RNA and DNA binding protein/DNA</option>
+          <option value="RNA AND DNA binding protein/RNA">RNA and DNA binding protein/RNA</option>
+          <option value="RNA BINDING PROTEIN">RNA binding protein</option>
+          <option value="RNA Binding protein / RNA">RNA binding protein / RNA</option>
+          <option value="RNA BINDING PROTEIN/ RNA">RNA binding protein/ RNA</option>
+          <option value="RNA binding protein/Chimera/RNA">RNA binding protein/chimera/RNA</option>
+          <option value="RNA Binding Protein/DNA">RNA binding protein/DNA</option>
+          <option value="RNA BINDING PROTEIN/DNA/RNA">RNA binding protein/DNA/RNA</option>
+          <option value="RNA BINDING PROTEIN/RNA">RNA binding protein/RNA</option>
+          <option value="RNA BINDING PROTEIN/RNA/DNA">RNA binding protein/RNA/DNA</option>
+          <option value="RNA BINDING PROTEIN/TRANSFERASE/RNA">RNA binding protein/transferase/RNA</option>
+          <option value="RNA binding/RNA">RNA binding/RNA</option>
+          <option value="RNA POLYMERASE">RNA polymerase</option>
+          <option value="RNA POLYMERASE SIGMA FACTOR RPON/DNA">RNA polymerase sigma factor rpon/DNA</option>
+          <option value="RNA, RIBOSOMAL PROTEIN">RNA, ribosomal protein</option>
+          <option value="RNA/HYDROLASE/RNA BINDING PROTEIN">RNA/hydrolase/RNA binding protein</option>
+          <option value="RNA/immune system">RNA/immune system</option>
+          <option value="RNA/PROTEIN">RNA/protein</option>
+          <option value="RNA/RNA binding">RNA/RNA binding</option>
+          <option value="RNA/RNA BINDING PROTEIN">RNA/RNA binding protein</option>
+          <option value="RNA/RNA BINDING PROTEIN/HYDROLASE">RNA/RNA binding protein/hydrolase</option>
+          <option value="RNA/VIRUS/VIRAL PROTEIN">RNA/virus/viral protein</option>
+          <option value="RNA-BINDING">RNA-binding</option>
+          <option value="RNA-BINDING PROTEIN/RNA">RNA-binding protein/RNA</option>
+          <option value="rRNA BINDING protein/RNA">rRNA binding protein/RNA</option>
+          <option value="SIGNALING PROTEIN">signaling protein</option>
+          <option value="SIGNALING PROTEIN/RNA">signaling protein/RNA</option>
+          <option value="SIGNALING PROTEIN/STRUCTURAL PROTEIN/DNA">signaling protein/structural protein/DNA</option>
+          <option value="SPLICING">splicing</option>
+          <option value="SPLICING/DNA">splicing/DNA</option>
+          <option value="splicing/DNA/RNA">splicing/DNA/RNA</option>
+          <option value="SPLICING/RNA">splicing/RNA</option>
+          <option value="STRUCTURAL PROTEIN">structural protein</option>
+          <option value="STRUCTURAL PROTEIN/DNA">structural protein/DNA</option>
+          <option value="'STRUCTURAL PROTEIN/DNA">structural protein/DNA</option>
+          <option value="STRUCTURAL PROTEIN/HYDROLASE/DNA">structural protein/hydrolase/DNA</option>
+          <option value="STRUCTURAL PROTEIN/RNA">structural protein/RNA</option>
+          <option value="STRUCTURAL PROTEIN/TRANSCRIPTION/DNA">structural protein/transcription/DNA</option>
+          <option value="SUGAR BINDING PROTEIN">sugar binding protein</option>
+          <option value="SYNTHETASE">synthetase</option>
+          <option value="TATA BOX-BINDING PROTEIN (TBP)">tata box-binding protein (tbp)</option>
+          <option value="Thansferase/DNA">thansferase/DNA</option>
+          <option value="TOXIN">toxin</option>
+          <option value="TOXIN/ANTITOXIN">toxin/antitoxin</option>
+          <option value="TOXIN/ANTITOXIN/DNA">toxin/antitoxin/DNA</option>
+          <option value="TOXIN/DNA">toxin/DNA</option>
+          <option value="TOXIN/RNA">toxin/RNA</option>
+          <option value="Tranferase/DNA/RNA">tranferase/DNA/RNA</option>
+          <option value="TRANLATION/RNA">tranlation/RNA</option>
+          <option value="TRANSCRIPTION">transcription</option>
+          <option value="TRANSCRIPTION  REGULATOR/DNA">transcription  regulator/DNA</option>
+          <option value="TRANSCRIPTION ACTIVATOR/DNA">transcription activator/DNA</option>
+          <option value="TRANSCRIPTION ACTIVATOR/TRANSFERASE/DNA">transcription activator/transferase/DNA</option>
+          <option value="TRANSCRIPTION FACTOR">transcription factor</option>
+          <option value="TRANSCRIPTION FACTOR/DNA">transcription factor/DNA</option>
+          <option value="TRANSCRIPTION REGULATION">transcription regulation</option>
+          <option value="TRANSCRIPTION REGULATION/DNA">transcription regulation/DNA</option>
+          <option value="TRANSCRIPTION REGULATOR">transcription regulator</option>
+          <option value="TRANSCRIPTION REGULATOR/DNA">transcription regulator/DNA</option>
+          <option value="TRANSCRIPTION REGULATOR/DNA/ANTIBIOTIC">transcription regulator/DNA/antibiotic</option>
+          <option value="TRANSCRIPTION REGULATOR/RNA">transcription regulator/RNA</option>
+          <option value="transcription repressor">transcription repressor</option>
+          <option value="Transcription repressor/DNA">transcription repressor/DNA</option>
+          <option value="TRANSCRIPTION, DNA BINDING PROTEIN/DNA">transcription, DNA binding protein/DNA</option>
+          <option value="TRANSCRIPTION, REPLICATION/DNA">transcription, replication/DNA</option>
+          <option value="TRANSCRIPTION, RNA BINDING PROTEIN/RNA">transcription, RNA binding protein/RNA</option>
+          <option value="TRANSCRIPTION, TRANSFERASE">transcription, transferase</option>
+          <option value="TRANSCRIPTION, TRANSFERASE/ANTIBIOTIC">transcription, transferase/antibiotic</option>
+          <option value="TRANSCRIPTION, TRANSFERASE/DNA">transcription, transferase/DNA</option>
+          <option value="Transcription, Transferase/DNA, RNA">transcription, transferase/DNA, RNA</option>
+          <option value="Transcription, TRANSFERASE/DNA/RNA">transcription, transferase/DNA/RNA</option>
+          <option value="TRANSCRIPTION, TRANSFERASE/DNA/RNA HYBRID">transcription, transferase/DNA/RNA hybrid</option>
+          <option value="TRANSCRIPTION, TRANSFERASE/DNA-RNA HYBRID">transcription, transferase/DNA-RNA hybrid</option>
+          <option value="Transcription, Transferase/RNA">transcription, transferase/RNA</option>
+          <option value="TRANSCRIPTION, viral protein/RNA">transcription, viral protein/RNA</option>
+          <option value="TRANSCRIPTION,TRANSFERASE/DNA/RNA HYBRID">transcription,transferase/DNA/RNA hybrid</option>
+          <option value="TRANSCRIPTION,TRANSFERASE/DNA-RNA HYBRID">transcription,transferase/DNA-RNA hybrid</option>
+          <option value="TRANSCRIPTION/DNA">transcription/DNA</option>
+          <option value="TRANSCRIPTION/DNA BINDING PROTEIN/DNA">transcription/DNA binding protein/DNA</option>
+          <option value="TRANSCRIPTION/DNA/ANTIBIOTIC">transcription/DNA/antibiotic</option>
+          <option value="TRANSCRIPTION/DNA/RNA">transcription/DNA/RNA</option>
+          <option value="transcription/dna/rna/antibiotic">transcription/DNA/RNA/antibiotic</option>
+          <option value="TRANSCRIPTION/DNA-RNA HYBRID">transcription/DNA-RNA hybrid</option>
+          <option value="TRANSCRIPTION/PROTEIN BINDING/DNA">transcription/protein binding/DNA</option>
+          <option value="TRANSCRIPTION/RNA">transcription/RNA</option>
+          <option value="TRANSCRIPTION/RNA/ANTIBIOTIC">transcription/RNA/antibiotic</option>
+          <option value="TRANSCRIPTION/RNA/DNA">transcription/RNA/DNA</option>
+          <option value="TRANSCRIPTION/TRANSFERASE/DNA">transcription/transferase/DNA</option>
+          <option value="TRANSCRIPTION/TRANSFERASE/DNA/RNA">transcription/transferase/DNA/RNA</option>
+          <option value="transcription/transport protein/DNA">transcription/transport protein/DNA</option>
+          <option value="TRANSCRIPTIONAL ACTIVATOR">transcriptional activator</option>
+          <option value="TRANSCRIPTIONAL REGULATION">transcriptional regulation</option>
+          <option value="TRANSCRIPTIONAL REPRESSOR">transcriptional repressor</option>
+          <option value="transcrption/DNA">transcrption/DNA</option>
+          <option value="TRANSFERASE">transferase</option>
+          <option value="TRANSFERASE, DNA BINDING PROTEIN/DNA">transferase, DNA binding protein/DNA</option>
+          <option value="TRANSFERASE, HYDROLASE/DNA">transferase, hydrolase/DNA</option>
+          <option value="TRANSFERASE, HYDROLASE/DNA/INHIBITOR">transferase, hydrolase/DNA/inhibitor</option>
+          <option value="TRANSFERASE, HYDROLASE/DNA/RNA">transferase, hydrolase/DNA/RNA</option>
+          <option value="TRANSFERASE, HYDROLASE/DNA/RNA/INHIBITOR">transferase, hydrolase/DNA/RNA/inhibitor</option>
+          <option value="TRANSFERASE, HYDROLASE/RNA/DNA">transferase, hydrolase/RNA/DNA</option>
+          <option value="TRANSFERASE, HYDROLASE/RNA/DNA/INHIBITOR">transferase, hydrolase/RNA/DNA/inhibitor</option>
+          <option value="Transferase, ligase/DNA">transferase, ligase/DNA</option>
+          <option value="Transferase, Lyase/DNA">transferase, lyase/DNA</option>
+          <option value="TRANSFERASE, REPLICATION/DNA">transferase, replication/DNA</option>
+          <option value="TRANSFERASE, TRANSCRIPTION/DNA">transferase, transcription/DNA</option>
+          <option value="Transferase,Lyase/DNA">transferase,lyase/DNA</option>
+          <option value="Transferase,replication/DNA">transferase,replication/DNA</option>
+          <option value="TRANSFERASE,TRANSCRIPTION/DNA">transferase,transcription/DNA</option>
+          <option value="Transferase/Antibody/DNA">transferase/antibody/DNA</option>
+          <option value="TRANSFERASE/DNA">transferase/DNA</option>
+          <option value="TRANSFERASE/DNA COMPLEX">transferase/DNA complex</option>
+          <option value="TRANSFERASE/DNA, LIGASE/DNA">transferase/DNA, ligase/DNA</option>
+          <option value="Transferase/DNA, Lyase/DNA">transferase/DNA, lyase/DNA</option>
+          <option value="TRANSFERASE/DNA/INHIBITOR">transferase/DNA/inhibitor</option>
+          <option value="TRANSFERASE/DNA/RNA">transferase/DNA/RNA</option>
+          <option value="TRANSFERASE/DNA/TRANSFERASE INHIBITOR">transferase/DNA/transferase inhibitor</option>
+          <option value="TRANSFERASE/DNA-RNA HYBRID">transferase/DNA-RNA hybrid</option>
+          <option value="TRANSFERASE/ELECTRON TRANSPORT/DNA">transferase/electron transport/DNA</option>
+          <option value="TRANSFERASE/IMMUNE SYSTEM/DNA">transferase/immune system/DNA</option>
+          <option value="TRANSFERASE/INHIBITOR/DNA">transferase/inhibitor/DNA</option>
+          <option value="TRANSFERASE/PEPTIDE/RNA">transferase/peptide/RNA</option>
+          <option value="TRANSFERASE/RIBOSOMAL PROTEIN/RNA">transferase/ribosomal protein/RNA</option>
+          <option value="TRANSFERASE/RNA">transferase/RNA</option>
+          <option value="Transferase/RNA/DNA">transferase/RNA/DNA</option>
+          <option value="TRANSFERASE/TRANSCRIPTION">transferase/transcription</option>
+          <option value="TRANSFERASE/TRANSCRIPTION ACTIVATOR/DNA">transferase/transcription activator/DNA</option>
+          <option value="TRANSFERASE/TRANSCRIPTION/DNA-RNA HYBRID">transferase/transcription/DNA-RNA hybrid</option>
+          <option value="TRANSFERASE/TRANSFERASE INHIBITOR">transferase/transferase inhibitor</option>
+          <option value="TRANSFERASE/TRANSFERASE INHIBITOR/DNA">transferase/transferase inhibitor/DNA</option>
+          <option value="TRANSFERASE/TRANSFERASE REGULATOR/DNA">transferase/transferase regulator/DNA</option>
+          <option value="TRANSFERASE/VIRAL PROTEIN/RNA">transferase/viral protein/RNA</option>
+          <option value="TRANSLATION">translation</option>
+          <option value="TRANSLATION REGULATOR/RNA">translation regulator/RNA</option>
+          <option value="TRANSLATION, TRANSFERASE/RNA">translation, transferase/RNA</option>
+          <option value="TRANSLATION/BIOSYNTHETIC PROTEIN/RNA">translation/biosynthetic protein/RNA</option>
+          <option value="TRANSLATION/RNA">translation/RNA</option>
+          <option value="TRANSLATION/RNA BINDING PROTEIN/RNA">translation/RNA binding protein/RNA</option>
+          <option value="TRANSPORT PROTEIN">transport protein</option>
+          <option value="TRANSPORT PROTEIN,SIGNALING PROTEIN/DNA">transport protein,signaling protein/DNA</option>
+          <option value="TRANSPORT PROTEIN/DNA">transport protein/DNA</option>
+          <option value="TRANSPORT PROTEIN/RNA">transport protein/RNA</option>
+          <option value="TRANSPORT/DNA Binding/DNA">transport/DNA binding/DNA</option>
+          <option value="VIRAL PROTEIN">viral protein</option>
+          <option value="VIRAL PROTEIN, RNA BINDING PROTEIN">viral protein, RNA binding protein</option>
+          <option value="VIRAL PROTEIN, TRANSFERASE/RNA">viral protein, transferase/RNA</option>
+          <option value="VIRAL PROTEIN,RNA BINDING PROTEIN/RNA">viral protein,RNA binding protein/RNA</option>
+          <option value="Viral protein/DNA">viral protein/DNA</option>
+          <option value="VIRAL PROTEIN/DNA/INHIBITOR">viral protein/DNA/inhibitor</option>
+          <option value="viral protein/dna/rna/inhibitor">viral protein/DNA/RNA/inhibitor</option>
+          <option value="VIRAL PROTEIN/REPLICATION INHIBITOR/RNA">viral protein/replication inhibitor/RNA</option>
+          <option value="Viral protein/RNA">viral protein/RNA</option>
+          <option value="Viral Protein/RNA/Immune System">viral protein/RNA/immune system</option>
+          <option value="VIRUS">virus</option>
+          <option value="Virus/DNA">virus/DNA</option>
+          <option value="Virus/RNA">virus/RNA</option>
+          <option value="VIRUS/VIRAL PROTEIN">virus/viral protein</option>
+          <option value="VIRUS/VIRAL PROTEIN/RNA">virus/viral protein/RNA</option>
+          <option value="ANTIVIRAL PROTEIN/RNA">antiviral protein/RNA</option>
+          <option value="IMMUNE SYSTEM/HYDROLASE/RNA">immune system/hydrolase/RNA</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="tableWrapper">
+    <table id="example" class="display" style="width:100%">
+      <thead>
+      <tr>
+        <th></th>
+        <th>PDB ID</th>
+        <th>Organism</th>
+        <th>Protein chain ID</th>
+        <th>NA chain ID</th>
+        <th>type</th>
+        <th>Classification</th>
+        <th>Uniprot entry</th>
+      </tr>
+      </thead>
+      <tfoot>
+      <tr>
+        <th></th>
+        <th>PDB ID</th>
+        <th>Organism</th>
+        <th>Protein chain ID</th>
+        <th>NA chain ID</th>
+        <th>type</th>
+        <th>Classification</th>
+        <th>Uniprot entry</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright © Tianjin University Institude of Computational Biology 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+</body>
 </html>
